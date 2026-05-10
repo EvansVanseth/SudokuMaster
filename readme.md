@@ -57,7 +57,7 @@ src/
 | ID    | Hito                                               | Estado       |
 | :---- | :------------------------------------------------- | :----------- |
 | H-001 | Configuración Base e Infraestructura (App / Shared) | ✅ Completado |
-| H-002 | Lógica de Dominio (Núcleo Hexagonal)               | 🔲 Pendiente  |
+| H-002 | Lógica de Dominio (Núcleo Hexagonal)               | ✅ Completado |
 | H-003 | Autenticación, Seguridad y Base de Datos (Supabase) | 🔲 Pendiente  |
 | H-004 | Interfaz de Usuario Core (UI del Juego)            | 🔲 Pendiente  |
 | H-005 | Persistencia de Datos y Autoguardado               | 🔲 Pendiente  |
@@ -193,6 +193,47 @@ Se creó el fichero `vercel.json` en la raíz del proyecto para configurar el pi
 - ✅ `npm run build` — Compilación de producción sin errores TypeScript.
 - ✅ `npm run test` — Test de humo del componente `App` pasa correctamente.
 - ✅ Pipeline CI/CD hacia Vercel conectado vía `vercel.json`.
+
+---
+
+## Hito 2 — Lógica de Dominio (Núcleo Hexagonal)
+
+**Objetivo:** Implementar el motor lógico del Sudoku de forma totalmente aislada de la interfaz, garantizando un rendimiento óptimo y la generación de puzzles profesionales con solución única.
+
+### Pasos realizados
+
+#### 1. Definición de Entidades de Dominio
+
+Se establecieron los tipos base en `src/domain/types.ts` para representar el tablero, las celdas y los niveles de dificultad, permitiendo que el resto de la aplicación hable un lenguaje común agnóstico a la tecnología.
+
+#### 2. Validador de Reglas Matemáticas
+
+Se implementó `src/domain/validator.ts` con funciones puras para verificar la validez de los movimientos y el estado de resolución del tablero, sin efectos secundarios.
+
+#### 3. Motor de Sudoku de Alto Rendimiento
+
+Se desarrolló un motor en `src/domain/sudokuEngine.ts` que incluye:
+- **Solver**: Backtracking optimizado con máscaras de bits y heurística **MRV**.
+- **Generador**: Eliminación simétrica de celdas con verificación de unicidad (node-limited).
+
+#### 4. Documentación de la Lógica de Negocio
+
+Se ha creado un documento detallado con el funcionamiento interno del motor:
+- [Documentación de Lógica de Negocio (Técnica)](docs/business_logic.md)
+- [¿Cómo se genera un Sudoku? (Explicación conceptual)](docs/explicacion_generador.md)
+
+#### 5. Suite de Tests Unitarios
+
+Se implementaron tests exhaustivos en `src/domain/__tests__/`, logrando una cobertura completa de las reglas y el motor de generación.
+
+---
+
+### Resultado de la validación del Hito 2
+
+- ✅ Generación de tableros en < 5ms (todas las dificultades).
+- ✅ Garantía de solución única y simetría profesional.
+- ✅ 28 tests unitarios pasando en Vitest.
+- ✅ Lógica 100% aislada en la capa de `domain/`.
 
 ---
 
