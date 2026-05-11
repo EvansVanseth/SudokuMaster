@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { AuthProvider } from './features/auth/components/AuthProvider';
 import { AppRouter } from './app/router/AppRouter';
 

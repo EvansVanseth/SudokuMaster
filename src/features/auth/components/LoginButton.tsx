@@ -1,7 +1,7 @@
-import React from 'react';
+import type { FC } from 'react';
 import { useAuth } from '../hooks/useAuth';
 
-export const LoginButton: React.FC = () => {
+export const LoginButton: FC = () => {
   const { signInWithGoogle, isLoading } = useAuth();
 
   return (

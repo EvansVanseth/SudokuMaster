@@ -1,10 +1,10 @@
-import React from 'react';
+import type { FC, ReactNode } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '../../features/auth/hooks/useAuth';
 import { LoginButton } from '../../features/auth/components/LoginButton';
 import { AuthForm } from '../../features/auth/components/AuthForm';
 
-const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const ProtectedRoute: FC<{ children: ReactNode }> = ({ children }) => {
   const { user, isLoading } = useAuth();
 
   if (isLoading) {
@@ -22,7 +22,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
   return <>{children}</>;
 };
 
-const LoginPage: React.FC = () => {
+const LoginPage: FC = () => {
   const { user } = useAuth();
 
   if (user) {
@@ -40,7 +40,7 @@ const LoginPage: React.FC = () => {
   );
 };
 
-const Dashboard: React.FC = () => {
+const Dashboard: FC = () => {
   const { user, signOut } = useAuth();
   return (
     <div className="glass-card" style={{ maxWidth: '600px', margin: '0 auto' }}>
@@ -54,7 +54,7 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export const AppRouter: React.FC = () => {
+export const AppRouter: FC = () => {
   return (
     <BrowserRouter>
       <Routes>

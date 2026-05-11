@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import type { ReactNode } from 'react';
+import { useEffect, useState } from 'react';
+import type { FC, ReactNode } from 'react';
 import { supabase } from '../../../shared/api/supabaseClient';
 import { AuthContext } from '../context/AuthContext';
 import type { User, Session } from '@supabase/supabase-js';
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
