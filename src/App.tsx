@@ -1,8 +1,11 @@
+import React from 'react';
+import { AuthProvider } from './features/auth/components/AuthProvider';
+import { AppRouter } from './app/router/AppRouter';
+
 export default function App() {
   return (
-    <div>
-      <h1>SudokuMaster</h1>
-      <p>Hito 1: Configuración Base Completada</p>
-    </div>
-  )
+    <AuthProvider>
+      <AppRouter />
+    </AuthProvider>
+  );
 }

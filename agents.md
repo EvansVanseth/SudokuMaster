@@ -70,7 +70,7 @@ npm run lint        # Run ESLint
 |-----------|--------|
 | H-001: Base Setup & Infrastructure | ✅ Complete |
 | H-002: Domain Logic (Hexagonal Core) | ✅ Complete |
-| H-003: Auth & Supabase Integration | 🔲 Pending |
+| H-003: Auth & Supabase Integration | ✅ Complete |
 | H-004: Game UI | 🔲 Pending |
 | H-005: Persistence & Auto-save | 🔲 Pending |
 | H-006: History & Dashboard | 🔲 Pending |
@@ -88,3 +88,12 @@ npm run lint        # Run ESLint
 4. **Current Hito**: The domain logic is complete (H-002). Next work should focus on H-003 (Auth & Supabase).
 
 5. **Validation approach**: The system uses a "permissive mode" - cells show errors visually but don't block input.
+
+6. **Security & Credentials**: 
+   - All connection URLs and API keys (Supabase, Google OAuth, etc.) are stored in `security_connections.md` at the root of the project.
+   - **CRITICAL**: These keys must **JAMÁS** (NEVER) be shared publicly, uploaded to version control, or included in any public documentation.
+   - Ensure `security_connections.md` is always listed in `.gitignore`.
+
+7. **Database & Context**:
+   - The database schema (PostgreSQL) is defined in `CONTEXT/supabase_schema.sql`.
+   - Use this folder for all architectural and database documentation that should be persisted for future agent sessions.
