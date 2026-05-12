@@ -44,8 +44,16 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     if (error) throw error;
   };
 
-  const signUpWithEmail = async (email: string, pass: string) => {
-    const { error } = await supabase.auth.signUp({ email, password: pass });
+  const signUpWithEmail = async (email: string, pass: string, displayName: string) => {
+    const { error } = await supabase.auth.signUp({ 
+      email, 
+      password: pass,
+      options: {
+        data: {
+          display_name: displayName,
+        }
+      }
+    });
     if (error) throw error;
   };
 

@@ -58,7 +58,7 @@ src/
 | :---- | :------------------------------------------------- | :----------- |
 | H-001 | Configuración Base e Infraestructura (App / Shared) | ✅ Completado |
 | H-002 | Lógica de Dominio (Núcleo Hexagonal)               | ✅ Completado |
-| H-003 | Autenticación, Seguridad y Base de Datos (Supabase) | 🔲 Pendiente  |
+| H-003 | Autenticación, Landing Page y Flujo de Usuario     | ✅ Completado |
 | H-004 | Interfaz de Usuario Core (UI del Juego)            | 🔲 Pendiente  |
 | H-005 | Persistencia de Datos y Autoguardado               | 🔲 Pendiente  |
 | H-006 | Historial, Dashboard y Cierre                      | 🔲 Pendiente  |
@@ -234,6 +234,41 @@ Se implementaron tests exhaustivos en `src/domain/__tests__/`, logrando una cobe
 - ✅ Garantía de solución única y simetría profesional.
 - ✅ 28 tests unitarios pasando en Vitest.
 - ✅ Lógica 100% aislada en la capa de `domain/`.
+
+---
+
+## Hito 3 — Autenticación, Landing Page y Flujo de Usuario
+
+**Objetivo:** Integrar Supabase para la autenticación de usuarios, construir la cara pública de la aplicación (landing page) y definir un flujo de usuario claro para el registro y el inicio de sesión.
+
+### Pasos realizados
+
+#### 1. Integración con Supabase
+- Se ha configurado el cliente de Supabase en `src/shared/api/supabaseClient.ts`, utilizando variables de entorno para las credenciales.
+- Se ha implementado el `AuthProvider` que gestiona el estado de la sesión y las funciones de autenticación (login/registro con email y Google).
+
+#### 2. Creación de la Landing Page
+- Se ha desarrollado una página de inicio (`/`) que sirve como presentación de la aplicación.
+- Incluye un banner dinámico que cambia según el estado de autenticación del usuario.
+- Muestra vistas previas de tableros de Sudoku para ilustrar la funcionalidad principal de la app.
+
+#### 3. Flujo Completo de Autenticación
+- Se han creado páginas dedicadas para el registro (`/register`) y el inicio de sesión (`/login`).
+- El formulario de registro incluye un campo `displayName`, que se almacena en los metadatos de Supabase para una experiencia de usuario más personalizada.
+- Se ha habilitado el inicio de sesión y registro con Google (OAuth).
+
+#### 4. Mejoras de UI/UX
+- Se han pulido los estilos de los formularios, botones y tarjetas de previsualización para ofrecer una experiencia visual coherente y atractiva.
+- Se ha mejorado la navegación entre las páginas públicas y el panel de control del usuario (`/dashboard`).
+
+---
+
+### Resultado de la validación del Hito 3
+
+- ✅ Registro de usuarios con email/contraseña y `displayName`.
+- ✅ Inicio de sesión y registro con Google funcionando correctamente.
+- ✅ Redirección correcta en producción (Vercel) gracias a la configuración de la "Site URL" en Supabase.
+- ✅ Flujo de usuario completo desde la landing page hasta el dashboard.
 
 ---
 

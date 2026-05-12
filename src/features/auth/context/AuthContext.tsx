@@ -8,7 +8,7 @@ export interface AuthState {
   signOut: () => Promise<void>;
   signInWithGoogle: () => Promise<void>;
   signInWithEmail: (email: string, pass: string) => Promise<void>;
-  signUpWithEmail: (email: string, pass: string) => Promise<void>;
+  signUpWithEmail: (email: string, pass: string, displayName: string) => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthState | undefined>(undefined);

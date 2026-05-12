@@ -1,0 +1,89 @@
+.sudoku-preview-card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sudoku-preview-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+.sudoku-grid-preview {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(9, 1fr);
+  background-color: #3a3a3c;
+  padding: 5px;
+  border-radius: 8px;
+  /* Use aspect-ratio for the whole grid to keep it square */
+  aspect-ratio: 1 / 1; 
+  gap: 1px;
+}
+
+.sudoku-cell-preview {
+  background-color: #1c1c1e;
+  color: #d1d1d6;
+  font-size: clamp(0.6rem, 2.5vw, 1.1rem);
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  /* Thicker borders for 3x3 boxes */
+  border-right: 1px solid #3a3a3c;
+  border-bottom: 1px solid #3a3a3c;
+}
+
+.sudoku-cell-preview:nth-child(3n) {
+  border-right-width: 3px;
+}
+.sudoku-cell-preview:nth-child(9n) {
+  border-right: none;
+}
+/* Select the 3rd and 6th rows of cells */
+.sudoku-grid-preview > .sudoku-cell-preview:nth-child(n+19):nth-child(-n+27),
+.sudoku-grid-preview > .sudoku-cell-preview:nth-child(n+46):nth-child(-n+54) {
+  border-bottom-width: 3px;
+}
+
+/* Remove bottom border from the last row */
+.sudoku-grid-preview > .sudoku-cell-preview:nth-child(n+73):nth-child(-n+81) {
+    border-bottom: none;
+}
+
+.card-content {
+  padding: 1rem;
+  text-align: center;
+}
+
+.card-content h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+.difficulty-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.difficulty-fácil {
+  background-color: #28a745; /* Verde */
+}
+
+.difficulty-medio {
+  background-color: #ffc107; /* Amarillo */
+}
+
+.difficulty-difícil {
+  background-color: #dc3545; /* Rojo */
+}
