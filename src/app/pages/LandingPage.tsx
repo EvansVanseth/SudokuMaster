@@ -1,4 +1,5 @@
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import type { FC } from 'react';
 import { UserBanner } from '../../features/auth/components/UserBanner';
 import { SudokuPreviewCard } from '../../shared/ui/SudokuPreviewCard';
 import { useAuth } from '../../features/auth/hooks/useAuth';
