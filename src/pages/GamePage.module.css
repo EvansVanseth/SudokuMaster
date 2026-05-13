@@ -1,0 +1,37 @@
+.gamePage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  padding: 2rem;
+  color: var(--text-main);
+  width: 100%;
+}
+
+.gameLayout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1100px;
+  align-items: flex-start;
+}
+
+@media (min-width: 1024px) {
+  .gameLayout {
+    grid-template-columns: 1fr 280px;
+  }
+}
+
+.boardContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.controlsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}

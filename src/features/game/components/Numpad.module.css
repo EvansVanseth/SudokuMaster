@@ -1,0 +1,43 @@
+.numpad {
+  padding: 1rem;
+  background: var(--card-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  width: 100%;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.button {
+  padding: 0.75rem;
+  font-weight: bold;
+  font-size: 1.25rem;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--text-main);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.button:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: var(--text-muted);
+}
+
+.deleteButton {
+  grid-column: span 3 / span 3;
+  font-size: 1rem;
+  background-color: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.5);
+  color: #fca5a5; /* red-300 */
+}
+
+.deleteButton:hover {
+  background-color: rgba(239, 68, 68, 0.4);
+  border-color: rgba(239, 68, 68, 0.8);
+}

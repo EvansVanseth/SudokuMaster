@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useGameStore } from '../store/gameStore';
+import styles from './Controls.module.css';
 
 export const Controls: React.FC = () => {
   const status = useGameStore((state) => state.status);
@@ -23,21 +24,21 @@ export const Controls: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-md w-full">
+    <div className={styles.controls}>
       <div>
-        <span className="text-xl font-mono">{formatTime(timer)}</span>
+        <span className={styles.timer}>{formatTime(timer)}</span>
       </div>
       <button
         onClick={togglePause}
-        className="px-4 py-2 font-semibold text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+        className="btn-secondary"
       >
-        {status === 'playing' ? 'Pause' : 'Resume'}
+        {status === 'playing' ? 'Pausa' : 'Reanudar'}
       </button>
       <button
         // onClick={newGame} // TODO: Implement new game functionality
-        className="px-4 py-2 font-semibold text-white bg-green-500 rounded-lg hover:bg-green-600"
+        className="btn-primary"
       >
-        New Game
+        Nueva Partida
       </button>
     </div>
   );

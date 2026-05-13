@@ -1,0 +1,69 @@
+.boardGrid {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 1px;
+  background-color: #374151; /* gray-700 */
+  width: 100%;
+  max-width: 500px;
+  aspect-ratio: 1 / 1;
+  border: 2px solid #374151;
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem; /* text-2xl */
+  font-weight: bold;
+  aspect-ratio: 1 / 1;
+  cursor: pointer;
+  background-color: #ffffff; /* white */
+  transition: background-color 0.2s ease;
+}
+
+.cell:hover {
+  background-color: #dbeafe; /* blue-100 */
+}
+
+/* Add borders for 3x3 boxes */
+.cell:nth-child(3n) {
+  border-right: 2px solid #374151;
+}
+.cell:nth-child(9n) {
+  border-right: none;
+}
+.row:nth-child(3n) {
+  border-bottom: 2px solid #374151;
+}
+.row:last-child {
+  border-bottom: none;
+}
+
+/* State-specific styles */
+.isClue {
+  color: #111827; /* gray-900 */
+}
+
+.notClue {
+  color: #2563eb; /* blue-600 */
+}
+
+.isSelected {
+  background-color: #bfdbfe; /* blue-200 */
+}
+
+.isRelated {
+  background-color: #e5e7eb; /* gray-200 */
+}
+
+.isError {
+  color: #ef4444; /* red-500 */
+}
+
+.borderRight {
+  border-right: 2px solid #374151;
+}
+
+.borderBottom {
+  border-bottom: 2px solid #374151;
+}
