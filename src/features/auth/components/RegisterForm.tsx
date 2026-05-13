@@ -8,6 +8,7 @@ export const RegisterForm: FC = () => {
   const [displayName, setDisplayName] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const { signUpWithEmail } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -23,14 +24,26 @@ export const RegisterForm: FC = () => {
 
     try {
       await signUpWithEmail(email, password, displayName);
-      // Aquí podrías redirigir al usuario o mostrar un mensaje de éxito.
-      // Por ahora, solo limpiamos el formulario.
+      setShowConfirmation(true);
     } catch (err: any) {
       setError(err.message || 'Error al registrar la cuenta.');
     } finally {
       setLoading(false);
     }
   };
+
+  if (showConfirmation) {
+    return (
+      <div className="confirmation-message" style={{ textAlign: 'center' }}>
+        <h2>¡Registro exitoso!</h2>
+        <p>
+          Te hemos enviado un correo de confirmación a <strong>{email}</strong>.
+        </p>
+        <p>Revisa tu bandeja de entrada y haz clic en el enlace para activar tu cuenta.</p>
+        <p className="confirmation-note">¿No lo encuentras? Revisa también tu carpeta de spam.</p>
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit}>
