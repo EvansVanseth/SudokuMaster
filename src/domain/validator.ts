@@ -111,6 +111,30 @@ export function isMoveValidGrid(grid: Grid, row: number, col: number, value: num
   )
 }
 
+// ─── Validación de Tablero Completo ──────────────────────────────────────────
+
+/**
+ * Recorre todo el tablero y actualiza el estado `isError` de cada celda.
+ * Devuelve una nueva instancia del tablero con los errores actualizados.
+ */
+export function validateBoard(board: Board): Board {
+  const newBoard = JSON.parse(JSON.stringify(board)); // Deep copy to avoid mutation
+
+  for (let r = 0; r < 9; r++) {
+    for (let c = 0; c < 9; c++) {
+      const cell = newBoard[r][c];
+      // Solo validamos las celdas que no son pistas y tienen un valor
+      if (!cell.isClue && cell.value !== null) {
+        cell.isError = !isMoveValid(newBoard, r, c, cell.value);
+      } else {
+        cell.isError = false; // Las pistas o celdas vacías no tienen error
+      }
+    }
+  }
+
+  return newBoard;
+}
+
 // ─── Comprobación de Victoria ─────────────────────────────────────────────────
 
 /**

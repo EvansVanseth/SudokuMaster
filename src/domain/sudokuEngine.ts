@@ -246,7 +246,7 @@ function generatePuzzleGrid(difficulty: Difficulty): Grid {
 
 // ─── API pública ──────────────────────────────────────────────────────────────
 
-export function generatePuzzle(difficulty: Difficulty): Board {
+export function generateSudoku(difficulty: Difficulty): Board {
   const grid = generatePuzzleGrid(difficulty)
   return grid.map(row =>
     row.map((value): Cell => ({

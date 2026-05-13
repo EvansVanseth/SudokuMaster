@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { describe, it, expect, beforeAll } from 'vitest'
-import { generatePuzzle, generateSolvedGrid, solveBoard, createBoardFromGrid } from '../sudokuEngine'
-import type { Difficulty, Grid } from '../types'
+import { generateSudoku, generateSolvedGrid, solveBoard, createBoardFromGrid } from '../sudokuEngine'
+import type { Difficulty, Grid, Cell } from '../types'
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -91,20 +91,20 @@ const CLUE_RANGES: Record<Difficulty, [number, number]> = {
   hard:   [25, 35],
 }
 
-describe.each<Difficulty>(['easy', 'medium', 'hard'])('generatePuzzle(%s)', (difficulty) => {
-  let board: ReturnType<typeof generatePuzzle>
-  beforeAll(() => { board = generatePuzzle(difficulty) }, 60_000)
+describe.each<Difficulty>(['easy', 'medium', 'hard'])('generateSudoku(%s)', (difficulty) => {
+  let board: ReturnType<typeof generateSudoku>
+  beforeAll(() => { board = generateSudoku(difficulty) }, 60_000)
 
   it('genera un Board 9x9 con pistas en rango', () => {
     expect(board).toHaveLength(9)
-    const clueCount = board.flat().filter(cell => cell.isClue).length
+    const clueCount = board.flat().filter((cell: Cell) => cell.isClue).length
     const [min, max] = CLUE_RANGES[difficulty]
     expect(clueCount).toBeGreaterThanOrEqual(min)
     expect(clueCount).toBeLessThanOrEqual(max)
   })
 
   it('no tiene errores al inicio', () => {
-    expect(board.flat().every(cell => !cell.isError)).toBe(true)
+    expect(board.flat().every((cell: Cell) => !cell.isError)).toBe(true)
   })
 })
 

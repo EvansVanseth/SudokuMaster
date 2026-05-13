@@ -4,13 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import { UserBanner } from '../../features/auth/components/UserBanner';
 import { SudokuPreviewCard } from '../../shared/ui/SudokuPreviewCard';
 import { useAuth } from '../../features/auth/hooks/useAuth';
-import { generatePuzzle } from '../../domain/sudokuEngine';
+import { generateSudoku } from '../../domain/sudokuEngine';
 
 function createGrids() {
   return {
-    easy: generatePuzzle('easy').map(row => row.map(cell => cell.value)),
-    medium: generatePuzzle('medium').map(row => row.map(cell => cell.value)),
-    hard: generatePuzzle('hard').map(row => row.map(cell => cell.value)),
+    easy: generateSudoku('easy').map(row => row.map(cell => cell.value)),
+    medium: generateSudoku('medium').map(row => row.map(cell => cell.value)),
+    hard: generateSudoku('hard').map(row => row.map(cell => cell.value)),
   };
 }
 
@@ -42,9 +42,9 @@ export const LandingPage: FC = () => {
             </button>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem', maxWidth: '1000px', margin: '0 auto' }}>
-            <SudokuPreviewCard title="Desafío Diario #1" difficulty="Fácil" grid={grids.easy} />
-            <SudokuPreviewCard title="Rompecabezas Mental" difficulty="Medio" grid={grids.medium} />
-            <SudokuPreviewCard title="El Imposible" difficulty="Difícil" grid={grids.hard} />
+            <SudokuPreviewCard title="Desafío Relajante" difficulty="easy" grid={grids.easy} />
+            <SudokuPreviewCard title="Reto Intermedio" difficulty="medium" grid={grids.medium} />
+            <SudokuPreviewCard title="El Experto" difficulty="hard" grid={grids.hard} />
           </div>
         </section>
 

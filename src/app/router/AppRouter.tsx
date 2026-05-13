@@ -5,6 +5,7 @@ import { LoginButton } from '../../features/auth/components/LoginButton';
 import { AuthForm } from '../../features/auth/components/AuthForm';
 import { LandingPage } from '../pages/LandingPage';
 import { RegisterPage } from '../pages/RegisterPage';
+import { GamePage } from '../../pages/GamePage';
 import { AuthCallback } from '../pages/AuthCallback';
 
 const ProtectedRoute: FC<{ children: ReactNode }> = ({ children }) => {
@@ -72,6 +73,7 @@ export const AppRouter: FC = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/" element={<LandingPage />} />
+        <Route path="/game/:difficulty" element={<GamePage />} />
         <Route 
           path="/dashboard" 
           element={
