@@ -101,7 +101,7 @@ function solveFast(
 
   if (bestR === -1) return true
 
-  let candidates = maskToCandidates(bestMask)
+  const candidates = maskToCandidates(bestMask)
   if (random) shuffle(candidates)
 
   const boxIdx = Math.floor(bestR / 3) * 3 + Math.floor(bestC / 3)

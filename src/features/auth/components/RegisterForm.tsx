@@ -25,8 +25,8 @@ export const RegisterForm: FC = () => {
     try {
       await signUpWithEmail(email, password, displayName);
       setShowConfirmation(true);
-    } catch (err: any) {
-      const msg = err?.message || '';
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : '';
       if (/already registered/i.test(msg)) {
         setError(
           'Este correo ya está registrado. Revisa tu bandeja de entrada o spam para confirmarlo, o inicia sesión.'

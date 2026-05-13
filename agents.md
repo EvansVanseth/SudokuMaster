@@ -71,6 +71,7 @@ npm run lint        # Run ESLint
 | H-001: Base Setup & Infrastructure | ✅ Complete |
 | H-002: Domain Logic (Hexagonal Core) | ✅ Complete |
 | H-003: Auth & Supabase Integration | ✅ Complete |
+| H-003.5: Landing Page & Auth Flow | ✅ Complete |
 | H-004: Game UI | 🔲 Pending |
 | H-005: Persistence & Auto-save | 🔲 Pending |
 | H-006: History & Dashboard | 🔲 Pending |
@@ -85,7 +86,7 @@ npm run lint        # Run ESLint
 
 3. **Generation performance**: Goal is <5ms generation time with unique solution guarantee.
 
-4. **Current Hito**: The domain logic is complete (H-002). Next work should focus on H-003 (Auth & Supabase).
+4. **Current Hito**: The domain logic is complete (H-002). Next work should focus on H-004 (Game UI).
 
 5. **Validation approach**: The system uses a "permissive mode" - cells show errors visually but don't block input.
 
