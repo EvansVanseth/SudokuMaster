@@ -6,6 +6,7 @@ export const Controls: React.FC = () => {
   const status = useGameStore((state) => state.status);
   const timer = useGameStore((state) => state.timer);
   const togglePause = useGameStore((state) => state.togglePause);
+  const toggleConfirmExit = useGameStore((state) => state.toggleConfirmExit);
 
   useEffect(() => {
     let interval: number | undefined;
@@ -28,10 +29,7 @@ export const Controls: React.FC = () => {
       <div>
         <span className={styles.timer}>{formatTime(timer)}</span>
       </div>
-      <button
-        onClick={togglePause}
-        className="btn-secondary"
-      >
+      <button onClick={togglePause} className="btn-secondary">
         {status === 'playing' ? 'Pausa' : 'Reanudar'}
       </button>
       <button
@@ -39,6 +37,9 @@ export const Controls: React.FC = () => {
         className="btn-primary"
       >
         Nueva Partida
+      </button>
+      <button onClick={toggleConfirmExit} className="btn-secondary">
+        Salir
       </button>
     </div>
   );

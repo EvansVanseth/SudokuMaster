@@ -1,3 +1,9 @@
+.boardContainer {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+}
+
 .boardGrid {
   display: grid;
   grid-template-columns: repeat(9, 1fr);

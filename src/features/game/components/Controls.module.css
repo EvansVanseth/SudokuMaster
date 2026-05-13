@@ -2,6 +2,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap; /* Allow content to wrap */
   padding: 1rem;
   background: var(--card-bg);
   border: 1px solid var(--glass-border);

@@ -2,11 +2,13 @@ import React from 'react';
 import { useGameStore } from '../store/gameStore';
 import styles from './BoardUI.module.css';
 import type { Cell } from '../../../domain/types';
+import { PauseOverlay } from './PauseOverlay';
 
 export const BoardUI: React.FC = () => {
   const board = useGameStore((state) => state.board);
   const selectedCell = useGameStore((state) => state.selectedCell);
   const selectCell = useGameStore((state) => state.selectCell);
+  const status = useGameStore((state) => state.status);
 
   const handleCellClick = (row: number, col: number) => {
     selectCell(row, col);
@@ -45,18 +47,21 @@ export const BoardUI: React.FC = () => {
   };
 
   return (
-    <div className={styles.boardGrid}>
-      {board.map((row, rowIndex) =>
-        row.map((cell, colIndex) => (
-          <div
-            key={`${rowIndex}-${colIndex}`}
-            onClick={() => handleCellClick(rowIndex, colIndex)}
-            className={getCellClassName(cell, rowIndex, colIndex)}
-          >
-            {cell.value || ''}
-          </div>
-        ))
-      )}
+    <div className={styles.boardContainer}>
+      {status === 'paused' && <PauseOverlay />}
+      <div className={styles.boardGrid}>
+        {board.map((row, rowIndex) =>
+          row.map((cell, colIndex) => (
+            <div
+              key={`${rowIndex}-${colIndex}`}
+              onClick={() => handleCellClick(rowIndex, colIndex)}
+              className={getCellClassName(cell, rowIndex, colIndex)}
+            >
+              {cell.value || ''}
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 };
