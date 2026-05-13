@@ -26,7 +26,18 @@ export const RegisterForm: FC = () => {
       await signUpWithEmail(email, password, displayName);
       setShowConfirmation(true);
     } catch (err: any) {
-      setError(err.message || 'Error al registrar la cuenta.');
+      const msg = err?.message || '';
+      if (/already registered/i.test(msg)) {
+        setError(
+          'Este correo ya está registrado. Revisa tu bandeja de entrada o spam para confirmarlo, o inicia sesión.'
+        );
+      } else if (/rate limit/i.test(msg)) {
+        setError(
+          'Has solicitado demasiados correos en poco tiempo. Espera unos minutos y vuelve a intentarlo. Revisa tu bandeja de entrada o spam para el correo de confirmación.'
+        );
+      } else {
+        setError(msg || 'Error al registrar la cuenta.');
+      }
     } finally {
       setLoading(false);
     }
