@@ -2,10 +2,8 @@ import React from 'react';
 import { useGameStore } from '../store/gameStore';
 
 export const Numpad: React.FC = () => {
-  const { enterNumber, deleteNumber } = useGameStore((state) => ({
-    enterNumber: state.enterNumber,
-    deleteNumber: state.deleteNumber,
-  }));
+  const enterNumber = useGameStore((state) => state.enterNumber);
+  const deleteNumber = useGameStore((state) => state.deleteNumber);
 
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 

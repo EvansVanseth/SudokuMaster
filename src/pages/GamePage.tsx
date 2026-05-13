@@ -8,13 +8,12 @@ import type { Difficulty } from '../domain/types';
 
 export const GamePage: React.FC = () => {
   const { difficulty } = useParams<{ difficulty: Difficulty }>();
-  const startGame = useGameStore((state) => state.startGame);
 
   React.useEffect(() => {
     if (difficulty) {
-      startGame(difficulty);
+      useGameStore.getState().startGame(difficulty);
     }
-  }, [difficulty, startGame]);
+  }, [difficulty]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">

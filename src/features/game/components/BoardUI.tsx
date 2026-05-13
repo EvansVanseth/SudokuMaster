@@ -2,11 +2,9 @@ import React from 'react';
 import { useGameStore } from '../store/gameStore';
 
 export const BoardUI: React.FC = () => {
-  const { board, selectedCell, selectCell } = useGameStore((state) => ({
-    board: state.board,
-    selectedCell: state.selectedCell,
-    selectCell: state.selectCell,
-  }));
+  const board = useGameStore((state) => state.board);
+  const selectedCell = useGameStore((state) => state.selectedCell);
+  const selectCell = useGameStore((state) => state.selectCell);
 
   const handleCellClick = (row: number, col: number) => {
     selectCell(row, col);

@@ -2,14 +2,12 @@ import React, { useEffect } from 'react';
 import { useGameStore } from '../store/gameStore';
 
 export const Controls: React.FC = () => {
-  const { status, timer, togglePause } = useGameStore((state) => ({
-    status: state.status,
-    timer: state.timer,
-    togglePause: state.togglePause,
-  }));
+  const status = useGameStore((state) => state.status);
+  const timer = useGameStore((state) => state.timer);
+  const togglePause = useGameStore((state) => state.togglePause);
 
   useEffect(() => {
-    let interval: number;
+    let interval: number | undefined;
     if (status === 'playing') {
       interval = setInterval(() => {
         useGameStore.setState((state) => ({ timer: state.timer + 1 }));
