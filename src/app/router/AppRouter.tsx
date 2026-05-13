@@ -5,6 +5,7 @@ import { LoginButton } from '../../features/auth/components/LoginButton';
 import { AuthForm } from '../../features/auth/components/AuthForm';
 import { LandingPage } from '../pages/LandingPage';
 import { RegisterPage } from '../pages/RegisterPage';
+import { AuthCallback } from '../pages/AuthCallback';
 
 const ProtectedRoute: FC<{ children: ReactNode }> = ({ children }) => {
   const { user, isLoading } = useAuth();
@@ -79,6 +80,7 @@ export const AppRouter: FC = () => {
             </ProtectedRoute>
           } 
         />
+        <Route path="/auth/callback" element={<AuthCallback />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

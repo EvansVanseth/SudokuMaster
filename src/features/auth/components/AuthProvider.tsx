@@ -38,12 +38,12 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     });
     if (error) throw error;
   };
-
+  
   const signInWithEmail = async (email: string, pass: string) => {
     const { error } = await supabase.auth.signInWithPassword({ email, password: pass });
     if (error) throw error;
   };
-
+  
   const signUpWithEmail = async (email: string, pass: string, displayName: string) => {
     const { error } = await supabase.auth.signUp({ 
       email, 
@@ -51,7 +51,8 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
       options: {
         data: {
           display_name: displayName,
-        }
+        },
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
       }
     });
     if (error) throw error;
