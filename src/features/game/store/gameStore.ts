@@ -13,6 +13,7 @@ interface GameState {
   isConfirmingExit: boolean;
   startGame: (difficulty: Difficulty) => void;
   selectCell: (row: number, col: number) => void;
+  moveSelection: (direction: 'up' | 'down' | 'left' | 'right') => void;
   enterNumber: (value: number) => void;
   deleteNumber: () => void;
   togglePause: () => void;
@@ -44,6 +45,31 @@ export const useGameStore = create<GameState>()(
           set({ selectedCell: null });
         } else {
           set({ selectedCell: { row, col } });
+        }
+      },
+      moveSelection: (direction) => {
+        const { board, selectedCell } = get();
+
+        const step = {
+          up: { row: -1, col: 0 },
+          down: { row: 1, col: 0 },
+          left: { row: 0, col: -1 },
+          right: { row: 0, col: 1 },
+        }[direction];
+
+        const current = selectedCell ?? { row: 0, col: 0 };
+        let nextRow = current.row + step.row;
+        let nextCol = current.col + step.col;
+
+        const isValid = (row: number, col: number) => row >= 0 && row < 9 && col >= 0 && col < 9;
+
+        while (isValid(nextRow, nextCol)) {
+          if (!board[nextRow][nextCol].isClue) {
+            set({ selectedCell: { row: nextRow, col: nextCol } });
+            return;
+          }
+          nextRow += step.row;
+          nextCol += step.col;
         }
       },
       enterNumber: (value) => {

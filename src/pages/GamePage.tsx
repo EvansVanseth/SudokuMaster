@@ -15,12 +15,47 @@ export const GamePage: React.FC = () => {
   const { user } = useAuth();
   const isConfirmingExit = useGameStore((state) => state.isConfirmingExit);
   const toggleConfirmExit = useGameStore((state) => state.toggleConfirmExit);
+  const status = useGameStore((state) => state.status);
+  const enterNumber = useGameStore((state) => state.enterNumber);
+  const deleteNumber = useGameStore((state) => state.deleteNumber);
+  const moveSelection = useGameStore((state) => state.moveSelection);
 
   React.useEffect(() => {
     if (difficulty) {
       useGameStore.getState().startGame(difficulty);
     }
   }, [difficulty]);
+
+  React.useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (status !== 'playing') return;
+      if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) return;
+
+      const { key } = event;
+      if (/^[1-9]$/.test(key)) {
+        enterNumber(Number(key));
+        event.preventDefault();
+      } else if (key === 'Backspace' || key === 'Delete') {
+        deleteNumber();
+        event.preventDefault();
+      } else if (key === 'ArrowUp') {
+        moveSelection('up');
+        event.preventDefault();
+      } else if (key === 'ArrowDown') {
+        moveSelection('down');
+        event.preventDefault();
+      } else if (key === 'ArrowLeft') {
+        moveSelection('left');
+        event.preventDefault();
+      } else if (key === 'ArrowRight') {
+        moveSelection('right');
+        event.preventDefault();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [status, enterNumber, deleteNumber, moveSelection]);
 
   const handleConfirmExit = () => {
     if (user) {
@@ -43,8 +78,8 @@ export const GamePage: React.FC = () => {
             <BoardUI />
           </div>
           <div className={styles.controlsContainer}>
-            <Controls />
             <Numpad />
+            <Controls />
           </div>
         </div>
       </div>

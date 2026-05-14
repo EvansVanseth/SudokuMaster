@@ -32,12 +32,6 @@ export const Controls: React.FC = () => {
       <button onClick={togglePause} className="btn-secondary">
         {status === 'playing' ? 'Pausa' : 'Reanudar'}
       </button>
-      <button
-        // onClick={newGame} // TODO: Implement new game functionality
-        className="btn-primary"
-      >
-        Nueva Partida
-      </button>
       <button onClick={toggleConfirmExit} className="btn-secondary">
         Salir
       </button>
