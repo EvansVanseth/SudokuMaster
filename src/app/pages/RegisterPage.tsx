@@ -26,6 +26,12 @@ export const RegisterPage: FC = () => {
           Inicia Sesión
         </Link>
       </p>
+      <p style={{ marginTop: '1rem', textAlign: 'center', fontSize: '0.9rem' }}>
+        ¿Necesitas volver a la pantalla principal?{' '}
+        <Link to="/" style={{ color: '#87CEEB', textDecoration: 'none' }}>
+          Volver a Landing
+        </Link>
+      </p>
     </div>
   );
 };

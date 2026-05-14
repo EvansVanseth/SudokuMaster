@@ -42,6 +42,12 @@ const LoginPage: FC = () => {
       <AuthForm />
       <div className="divider">o</div>
       <LoginButton />
+      <p style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.9rem' }}>
+        ¿Quieres volver a la página principal?{' '}
+        <Link to="/" style={{ color: '#87CEEB', textDecoration: 'none' }}>
+          Volver a Landing
+        </Link>
+      </p>
     </div>
   );
 };
