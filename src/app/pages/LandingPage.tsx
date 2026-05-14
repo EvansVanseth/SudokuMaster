@@ -5,6 +5,7 @@ import { UserBanner } from '../../features/auth/components/UserBanner';
 import { SudokuPreviewCard } from '../../shared/ui/SudokuPreviewCard';
 import { useAuth } from '../../features/auth/hooks/useAuth';
 import { generateSudoku } from '../../domain/sudokuEngine';
+import { restoreSessionGameState, type PersistedGameState } from '../../features/game/store/gameStore';
 import styles from './LandingPage.module.css';
 
 function createGrids() {
@@ -14,6 +15,25 @@ function createGrids() {
     hard: generateSudoku('hard').map(row => row.map(cell => cell.value)),
   };
 }
+
+const buildPreviewState = (grid: (number | null)[][], difficulty: 'easy' | 'medium' | 'hard'): PersistedGameState => {
+  const board = grid.map(row =>
+    row.map(value => ({
+      value: value === null ? null : value,
+      isClue: value !== null,
+      isError: false,
+    }))
+  );
+
+  return {
+    board,
+    initialBoard: JSON.parse(JSON.stringify(board)),
+    selectedCell: null,
+    status: 'playing',
+    timer: 0,
+    difficulty,
+  };
+};
 
 export const LandingPage: FC = () => {
   const { user } = useAuth();
@@ -43,9 +63,24 @@ export const LandingPage: FC = () => {
             </button>
           </div>
           <div className={styles.previewGrid}>
-            <SudokuPreviewCard title="Desafío Relajante" difficulty="easy" grid={grids.easy} />
-            <SudokuPreviewCard title="Reto Intermedio" difficulty="medium" grid={grids.medium} />
-            <SudokuPreviewCard title="El Experto" difficulty="hard" grid={grids.hard} />
+            <SudokuPreviewCard
+              title="Desafío Relajante"
+              difficulty="easy"
+              grid={grids.easy}
+              onPreviewSelect={() => restoreSessionGameState(buildPreviewState(grids.easy, 'easy'))}
+            />
+            <SudokuPreviewCard
+              title="Reto Intermedio"
+              difficulty="medium"
+              grid={grids.medium}
+              onPreviewSelect={() => restoreSessionGameState(buildPreviewState(grids.medium, 'medium'))}
+            />
+            <SudokuPreviewCard
+              title="El Experto"
+              difficulty="hard"
+              grid={grids.hard}
+              onPreviewSelect={() => restoreSessionGameState(buildPreviewState(grids.hard, 'hard'))}
+            />
           </div>
         </section>
 

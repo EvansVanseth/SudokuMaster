@@ -6,7 +6,7 @@ import * as validator from '../../../domain/validator';
 
 const SESSION_KEY = 'sudoku_master_game_state';
 
-type PersistedGameState = {
+export type PersistedGameState = {
   board: Board;
   initialBoard: Board;
   selectedCell: { row: number; col: number } | null;
@@ -42,6 +42,11 @@ const loadSessionState = (): PersistedGameState | null => {
 const saveSessionState = (state: PersistedGameState) => {
   if (typeof window === 'undefined') return;
   sessionStorage.setItem(SESSION_KEY, JSON.stringify(state));
+};
+
+export const restoreSessionGameState = (state: PersistedGameState) => {
+  saveSessionState(state);
+  useGameStore.setState(state);
 };
 
 interface GameState {

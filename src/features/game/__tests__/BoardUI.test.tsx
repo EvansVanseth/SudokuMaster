@@ -1,11 +1,11 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { BoardUI } from '../components/BoardUI';
 import { PauseOverlay } from '../components/PauseOverlay';
 import styles from '../components/BoardUI.module.css';
 import { useGameStore } from '../store/gameStore';
+import type { Cell } from '../../../domain/types';
 
-const createEmptyBoard = () =>
+const createEmptyBoard = (): Cell[][] =>
   Array.from({ length: 9 }, () =>
     Array.from({ length: 9 }, () => ({ value: null, isClue: false, isError: false }))
   );

@@ -9,9 +9,10 @@ interface Props {
   title: string;
   difficulty: Difficulty;
   grid: Grid;
+  onPreviewSelect?: () => void;
 }
 
-export const SudokuPreviewCard: FC<Props> = ({ title, difficulty, grid }) => {
+export const SudokuPreviewCard: FC<Props> = ({ title, difficulty, grid, onPreviewSelect }) => {
   const difficultyMap = {
     easy: 'Fácil',
     medium: 'Medio',
@@ -19,7 +20,7 @@ export const SudokuPreviewCard: FC<Props> = ({ title, difficulty, grid }) => {
   };
 
   return (
-    <Link to={`/game/${difficulty}`} className="sudoku-preview-card-link">
+    <Link to={`/game/${difficulty}`} className="sudoku-preview-card-link" onClick={onPreviewSelect}>
       <div className="sudoku-preview-card">
         <div className="sudoku-grid-preview">
           {grid.map((row, rowIndex) =>
