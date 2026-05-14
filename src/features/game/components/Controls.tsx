@@ -8,15 +8,17 @@ export const Controls: React.FC = () => {
   const togglePause = useGameStore((state) => state.togglePause);
   const toggleConfirmExit = useGameStore((state) => state.toggleConfirmExit);
 
+  const tickTimer = useGameStore((state) => state.tickTimer);
+
   useEffect(() => {
     let interval: number | undefined;
     if (status === 'playing') {
       interval = setInterval(() => {
-        useGameStore.setState((state) => ({ timer: state.timer + 1 }));
+        tickTimer();
       }, 1000);
     }
     return () => clearInterval(interval);
-  }, [status]);
+  }, [status, tickTimer]);
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);

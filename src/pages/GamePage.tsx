@@ -21,9 +21,14 @@ export const GamePage: React.FC = () => {
   const moveSelection = useGameStore((state) => state.moveSelection);
 
   React.useEffect(() => {
-    if (difficulty) {
-      useGameStore.getState().startGame(difficulty);
+    if (!difficulty) return;
+
+    const { board, difficulty: savedDifficulty } = useGameStore.getState();
+    if (board.length > 0 && savedDifficulty === difficulty) {
+      return;
     }
+
+    useGameStore.getState().startGame(difficulty);
   }, [difficulty]);
 
   React.useEffect(() => {
