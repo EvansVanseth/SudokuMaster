@@ -85,6 +85,29 @@ body {
   border-color: var(--text-muted);
 }
 
+.btn-danger {
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: inherit;
+}
+
+.btn-danger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+  filter: brightness(1.1);
+}
+
+
 h1 {
   font-size: clamp(2rem, 6vw, 3rem);
   font-weight: 800;
@@ -176,19 +199,80 @@ p {
   text-decoration: underline;
 }
 
-@media (max-width: 420px) {
+@media (max-width: 600px) {
   .glass-card {
-    width: min(100%, calc(100vw - 1.5rem));
     padding: 1.5rem 1rem;
+    border-radius: 16px;
+    margin: 0.5rem;
   }
 
-  body {
-    min-height: auto;
+  h1 {
+    font-size: 1.8rem;
   }
 
-  .btn-primary,
-  .btn-secondary {
-    font-size: 0.95rem;
-    padding: 0.7rem 1rem;
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+  }
+
+  table,
+  tbody {
+    display: block;
+    width: 100%;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tr {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--glass-border);
+    width: 100%;
+  }
+
+  td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0 !important;
+    font-size: 0.9rem;
+    width: 100%;
+  }
+
+  td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--text-muted);
+    text-align: left;
+    margin-right: 1rem;
+  }
+
+  /* Specific handling for the actions cell */
+  td:last-child {
+    margin-top: 1rem;
+    display: block;
+    padding: 0 !important;
+  }
+
+  td:last-child div {
+    flex-direction: column;
+    width: 100%;
   }
 }
+
+@media (max-width: 420px) {
+  .btn-primary,
+  .btn-secondary,
+  .btn-danger {
+    width: 100%;
+    min-width: unset !important;
+  }
+}
+
+

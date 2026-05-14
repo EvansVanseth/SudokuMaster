@@ -3,7 +3,8 @@ import { BoardUI } from '../features/game/components/BoardUI';
 import { Controls } from '../features/game/components/Controls';
 import { Numpad } from '../features/game/components/Numpad';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useGameStore } from '../features/game/store/gameStore';
+import { useGameStore, restoreSessionGameState } from '../features/game/store/gameStore';
+import { saveGameStateToSupabase } from '../features/game/services/gamePersistence';
 import type { Difficulty } from '../domain/types';
 import styles from './GamePage.module.css';
 import { Modal } from '../shared/ui/Modal';
@@ -16,9 +17,14 @@ export const GamePage: React.FC = () => {
   const isConfirmingExit = useGameStore((state) => state.isConfirmingExit);
   const toggleConfirmExit = useGameStore((state) => state.toggleConfirmExit);
   const status = useGameStore((state) => state.status);
+  const board = useGameStore((state) => state.board);
+  const timer = useGameStore((state) => state.timer);
+  const savedGameId = useGameStore((state) => state.savedGameId);
   const enterNumber = useGameStore((state) => state.enterNumber);
   const deleteNumber = useGameStore((state) => state.deleteNumber);
   const moveSelection = useGameStore((state) => state.moveSelection);
+
+  const saveTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
   React.useEffect(() => {
     if (!difficulty) return;
@@ -62,10 +68,49 @@ export const GamePage: React.FC = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [status, enterNumber, deleteNumber, moveSelection]);
 
-  const handleConfirmExit = () => {
+  const flushRemoteSave = React.useCallback(async () => {
+    if (!user?.id || !difficulty) return;
+
+    const currentState = useGameStore.getState();
+    if (currentState.status === 'initial') return;
+
+    const { id, error } = await saveGameStateToSupabase(user.id, currentState, currentState.savedGameId);
+    if (error) {
+      console.warn('Error guardando partida en Supabase:', error.message);
+      return;
+    }
+
+    if (id && id !== currentState.savedGameId) {
+      restoreSessionGameState({ ...currentState, savedGameId: id });
+    }
+  }, [difficulty, user]);
+
+  React.useEffect(() => {
+    if (!user?.id || !difficulty) return;
+    if (status === 'initial') return;
+
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+    }
+
+    saveTimeoutRef.current = window.setTimeout(() => {
+      flushRemoteSave().catch((error) => {
+        console.warn('Error en autoguardado remoto:', error);
+      });
+      saveTimeoutRef.current = null;
+    }, 1200);
+
+    return () => {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+    };
+  }, [board, timer, status, difficulty, savedGameId, user?.id, flushRemoteSave]);
+
+  const handleConfirmExit = async () => {
     if (user) {
-      // TODO: Hito 5 - Guardar el estado del juego en la base de datos
-      console.log('Usuario autenticado: Saliendo al dashboard. (Guardado pendiente)');
+      await flushRemoteSave();
+      console.log('Usuario autenticado: partida guardada y saliendo al dashboard.');
       navigate('/dashboard');
     } else {
       console.log('Usuario anónimo: Saliendo a la landing page.');

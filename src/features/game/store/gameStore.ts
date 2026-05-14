@@ -13,6 +13,7 @@ export type PersistedGameState = {
   status: 'playing' | 'paused' | 'solved' | 'initial';
   timer: number;
   difficulty: Difficulty | null;
+  savedGameId?: string;
 };
 
 const loadSessionState = (): PersistedGameState | null => {
@@ -56,6 +57,7 @@ interface GameState {
   status: 'playing' | 'paused' | 'solved' | 'initial';
   timer: number;
   difficulty: Difficulty | null;
+  savedGameId?: string;
   isConfirmingExit: boolean;
   startGame: (difficulty: Difficulty) => void;
   selectCell: (row: number, col: number) => void;
@@ -78,6 +80,7 @@ export const useGameStore = create<GameState>()(
       status: initialSessionState?.status ?? 'initial',
       timer: initialSessionState?.timer ?? 0,
       difficulty: initialSessionState?.difficulty ?? null,
+      savedGameId: initialSessionState?.savedGameId,
       isConfirmingExit: false,
       startGame: (difficulty) => {
         const newBoard = sudokuEngine.generateSudoku(difficulty);
@@ -88,6 +91,7 @@ export const useGameStore = create<GameState>()(
           status: 'playing',
           timer: 0,
           difficulty,
+          savedGameId: undefined,
         };
 
         set(nextState);
@@ -103,6 +107,7 @@ export const useGameStore = create<GameState>()(
             status: state.status,
             timer: state.timer,
             difficulty: state.difficulty,
+            savedGameId: state.savedGameId,
           };
           saveSessionState(nextState);
           return { selectedCell: nextSelection };
@@ -132,6 +137,7 @@ export const useGameStore = create<GameState>()(
                 status: state.status,
                 timer: state.timer,
                 difficulty: state.difficulty,
+                savedGameId: state.savedGameId,
               };
               saveSessionState(nextState);
               return { selectedCell: { row: nextRow, col: nextCol } };
@@ -158,6 +164,7 @@ export const useGameStore = create<GameState>()(
             status: state.status,
             timer: state.timer,
             difficulty: state.difficulty,
+            savedGameId: state.savedGameId,
           };
           saveSessionState(nextState);
           return { board: updatedBoard };
@@ -178,6 +185,7 @@ export const useGameStore = create<GameState>()(
             status: state.status,
             timer: state.timer,
             difficulty: state.difficulty,
+            savedGameId: state.savedGameId,
           };
           saveSessionState(nextState);
           return { board: updatedBoard };
@@ -192,6 +200,7 @@ export const useGameStore = create<GameState>()(
             status: state.status,
             timer: state.timer + 1,
             difficulty: state.difficulty,
+            savedGameId: state.savedGameId,
           };
           saveSessionState(nextState);
           return { timer: state.timer + 1 };
@@ -207,6 +216,7 @@ export const useGameStore = create<GameState>()(
             status: nextStatus,
             timer: state.timer,
             difficulty: state.difficulty,
+            savedGameId: state.savedGameId,
           };
           saveSessionState(nextState);
           return { status: nextStatus };
