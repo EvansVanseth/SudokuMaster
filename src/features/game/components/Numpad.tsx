@@ -5,6 +5,7 @@ import styles from './Numpad.module.css';
 export const Numpad: React.FC = () => {
   const enterNumber = useGameStore((state) => state.enterNumber);
   const deleteNumber = useGameStore((state) => state.deleteNumber);
+  const status = useGameStore((state) => state.status);
 
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -16,6 +17,7 @@ export const Numpad: React.FC = () => {
             key={num}
             onClick={() => enterNumber(num)}
             className={styles.button}
+            disabled={status === 'solved'}
           >
             {num}
           </button>
@@ -23,6 +25,7 @@ export const Numpad: React.FC = () => {
         <button
           onClick={deleteNumber}
           className={`${styles.button} ${styles.deleteButton}`}
+          disabled={status === 'solved'}
         >
           Borrar
         </button>

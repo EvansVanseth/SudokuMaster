@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { useGameStore } from '../store/gameStore';
 import styles from './Controls.module.css';
+import { useAuth } from '../../auth/hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 export const Controls: React.FC = () => {
   const status = useGameStore((state) => state.status);
@@ -9,6 +11,9 @@ export const Controls: React.FC = () => {
   const toggleConfirmExit = useGameStore((state) => state.toggleConfirmExit);
 
   const tickTimer = useGameStore((state) => state.tickTimer);
+
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     let interval: number | undefined;
@@ -31,10 +36,11 @@ export const Controls: React.FC = () => {
       <div>
         <span className={styles.timer}>{formatTime(timer)}</span>
       </div>
-      <button onClick={togglePause} className="btn-secondary">
+      <button onClick={togglePause} className="btn-secondary" disabled={status === 'solved'}>
         {status === 'playing' ? 'Pausa' : 'Reanudar'}
       </button>
-      <button onClick={toggleConfirmExit} className="btn-secondary">
+      {status === 'solved' && <div style={{ marginLeft: '0.5rem', fontWeight: 700, color: '#075985' }}>Resuelto</div>}
+      <button onClick={() => toggleConfirmExit(user?.id, () => navigate('/dashboard'))} className="btn-secondary">
         Salir
       </button>
     </div>

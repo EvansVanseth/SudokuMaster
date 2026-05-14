@@ -3,6 +3,7 @@ import { devtools } from 'zustand/middleware';
 import type { Board, Difficulty } from '../../../domain/types';
 import * as sudokuEngine from '../../../domain/sudokuEngine';
 import * as validator from '../../../domain/validator';
+import { saveGameStateToSupabase } from '../services/gamePersistence';
 
 const SESSION_KEY = 'sudoku_master_game_state';
 
@@ -66,7 +67,7 @@ interface GameState {
   deleteNumber: () => void;
   tickTimer: () => void;
   togglePause: () => void;
-  toggleConfirmExit: () => void;
+  toggleConfirmExit: (userId?: string, onAfter?: () => void) => Promise<void> | void;
 }
 
 const initialSessionState = loadSessionState();
@@ -157,17 +158,19 @@ export const useGameStore = create<GameState>()(
           const newBoard = JSON.parse(JSON.stringify(state.board));
           newBoard[row][col].value = value;
           const updatedBoard = validator.validateBoard(newBoard);
+          const isSolved = validator.isBoardSolved(updatedBoard);
           const nextState: PersistedGameState = {
             board: updatedBoard,
             initialBoard: state.initialBoard,
             selectedCell: state.selectedCell,
-            status: state.status,
+            status: isSolved ? 'solved' : state.status,
             timer: state.timer,
             difficulty: state.difficulty,
             savedGameId: state.savedGameId,
           };
+
           saveSessionState(nextState);
-          return { board: updatedBoard };
+          return isSolved ? { board: updatedBoard, status: 'solved' } : { board: updatedBoard };
         });
       },
       deleteNumber: () => {
@@ -178,17 +181,18 @@ export const useGameStore = create<GameState>()(
           const newBoard = JSON.parse(JSON.stringify(state.board));
           newBoard[row][col].value = null;
           const updatedBoard = validator.validateBoard(newBoard);
+          const isSolved = validator.isBoardSolved(updatedBoard);
           const nextState: PersistedGameState = {
             board: updatedBoard,
             initialBoard: state.initialBoard,
             selectedCell: state.selectedCell,
-            status: state.status,
+            status: isSolved ? 'solved' : state.status,
             timer: state.timer,
             difficulty: state.difficulty,
             savedGameId: state.savedGameId,
           };
           saveSessionState(nextState);
-          return { board: updatedBoard };
+          return isSolved ? { board: updatedBoard, status: 'solved' } : { board: updatedBoard };
         });
       },
       tickTimer: () => {
@@ -222,7 +226,29 @@ export const useGameStore = create<GameState>()(
           return { status: nextStatus };
         });
       },
-      toggleConfirmExit: () => {
+      toggleConfirmExit: async (userId?: string, onAfter?: () => void) => {
+        if (userId) {
+          // Logged-in user: flush save remotely and call onAfter (navigation) when done
+          const currentState = useGameStore.getState();
+          if (currentState.status !== 'initial') {
+            try {
+              const { id, error } = await saveGameStateToSupabase(userId, currentState, currentState.savedGameId);
+              if (error) console.warn('Error guardando partida al salir (store):', error.message);
+              if (id && id !== currentState.savedGameId) {
+                restoreSessionGameState({ ...currentState, savedGameId: id });
+              }
+            } catch (e) {
+              console.warn('Error guardando partida al salir (store):', e);
+            }
+          }
+
+          // Close any modal state and trigger callback
+          set({ isConfirmingExit: false });
+          if (onAfter) onAfter();
+          return;
+        }
+
+        // Anonymous user: toggle confirmation modal
         set((state) => ({ isConfirmingExit: !state.isConfirmingExit }));
       },
     }),

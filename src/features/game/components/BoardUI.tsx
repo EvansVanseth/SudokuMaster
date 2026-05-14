@@ -38,6 +38,7 @@ export const BoardUI: React.FC = () => {
     else if (isRelated) classNames.push(styles.isRelated);
 
     if (cell.isError) classNames.push(styles.isError);
+    if (status === 'solved') classNames.push(styles.solvedCell);
 
     // Box borders
     if ((colIndex + 1) % 3 === 0 && colIndex < 8) classNames.push(styles.borderRight);
@@ -49,6 +50,11 @@ export const BoardUI: React.FC = () => {
   return (
     <div className={styles.boardContainer}>
       {status === 'paused' && <PauseOverlay />}
+      {status === 'solved' && (
+        <div className={styles.solvedOverlay}>
+          <div className={styles.solvedStamp}>Resuelto</div>
+        </div>
+      )}
       <div className={styles.boardGrid}>
         {board.map((row, rowIndex) =>
           row.map((cell, colIndex) => (

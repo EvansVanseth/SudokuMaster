@@ -85,6 +85,14 @@ body {
   border-color: var(--text-muted);
 }
 
+.btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+  filter: grayscale(10%);
+  border-color: rgba(255,255,255,0.04);
+}
+
 .btn-danger {
   background: linear-gradient(135deg, #ef4444, #b91c1c);
   color: white;

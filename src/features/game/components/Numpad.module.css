@@ -30,6 +30,12 @@
   transform: translateY(-1px);
 }
 
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .deleteButton {
   grid-column: span 3 / span 3;
   font-size: 1rem;
@@ -41,6 +47,11 @@
 .deleteButton:hover {
   background-color: rgba(239, 68, 68, 0.4);
   border-color: rgba(239, 68, 68, 0.8);
+}
+
+.deleteButton:disabled {
+  background-color: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.25);
 }
 
 @media (max-width: 540px) {

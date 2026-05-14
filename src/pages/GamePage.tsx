@@ -4,7 +4,7 @@ import { Controls } from '../features/game/components/Controls';
 import { Numpad } from '../features/game/components/Numpad';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGameStore, restoreSessionGameState } from '../features/game/store/gameStore';
-import { saveGameStateToSupabase } from '../features/game/services/gamePersistence';
+import { saveGameStateToSupabase, completeSavedGameIfNeeded } from '../features/game/services/gamePersistence';
 import type { Difficulty } from '../domain/types';
 import styles from './GamePage.module.css';
 import { Modal } from '../shared/ui/Modal';
@@ -86,6 +86,25 @@ export const GamePage: React.FC = () => {
   }, [difficulty, user]);
 
   React.useEffect(() => {
+    // When solved, flush remote save immediately and mark completed remotely if savedGameId exists
+    if (status !== 'solved') return;
+
+    (async () => {
+      try {
+        await flushRemoteSave();
+        const current = useGameStore.getState();
+        if (current.savedGameId) {
+          await completeSavedGameIfNeeded(current.savedGameId, true);
+        }
+      } catch (e) {
+        console.warn('Error marking game as completed remotely:', e);
+      }
+    })();
+  }, [status, flushRemoteSave]);
+
+  
+
+  React.useEffect(() => {
     if (!user?.id || !difficulty) return;
     if (status === 'initial') return;
 
@@ -108,15 +127,14 @@ export const GamePage: React.FC = () => {
   }, [board, timer, status, difficulty, savedGameId, user?.id, flushRemoteSave]);
 
   const handleConfirmExit = async () => {
+    // Use centralized store API to handle save & exit when user is logged-in
     if (user) {
-      await flushRemoteSave();
-      console.log('Usuario autenticado: partida guardada y saliendo al dashboard.');
-      navigate('/dashboard');
+      await useGameStore.getState().toggleConfirmExit(user.id, () => navigate('/dashboard'));
     } else {
       console.log('Usuario anónimo: Saliendo a la landing page.');
       navigate('/');
+      toggleConfirmExit(); // Cierra el modal
     }
-    toggleConfirmExit(); // Cierra el modal
   };
 
   return (
@@ -133,19 +151,19 @@ export const GamePage: React.FC = () => {
           </div>
         </div>
       </div>
-      <Modal isOpen={isConfirmingExit} onClose={toggleConfirmExit}>
+      <Modal isOpen={isConfirmingExit} onClose={() => toggleConfirmExit()}>
         <h2>¿Seguro que quieres salir?</h2>
         <p>
           {user
             ? 'Tu progreso actual se guardará.'
-            : 'El progreso de la partida no se guardará.'}
+            : 'El progreso de la partida se PERDERA si sales.'}
         </p>
         <div className={styles.modalActions}>
-          <button onClick={toggleConfirmExit} className="btn-secondary">
-            Cancelar
+          <button onClick={() => toggleConfirmExit()} className="btn-secondary">
+            No
           </button>
           <button onClick={handleConfirmExit} className="btn-primary">
-            Confirmar
+            Si
           </button>
         </div>
       </Modal>
