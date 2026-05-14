@@ -179,7 +179,7 @@ const Dashboard: FC = () => {
                 {pendingGames.map((game) => (
                   <tr key={game.id} style={{ borderTop: '1px solid rgba(255,255,255,0.12)' }}>
                     <td data-label="Dificultad" style={{ padding: '1rem 0', textAlign: 'left' }}>
-                      {difficultyMap[game.difficulty] || game.difficulty}
+                      {game.difficulty ? (difficultyMap[game.difficulty] || game.difficulty) : 'Desconocida'}
                     </td>
                     <td data-label="Tiempo" style={{ padding: '1rem 0', textAlign: 'left' }}>
                       {Math.floor(game.time_spent / 60)} min {game.time_spent % 60} seg
