@@ -91,7 +91,22 @@ export const completeSavedGameIfNeeded = async (
 };
 
 export const deleteSavedGame = async (savedGameId: string): Promise<{ error?: Error }> => {
-  const { error } = await supabase.from('games').delete().eq('id', savedGameId);
-  return { error: error ?? undefined };
+  const { data, error } = await supabase
+    .from('games')
+    .delete()
+    .eq('id', savedGameId)
+    .select();
+
+  if (error) return { error };
+
+  if (!data || data.length === 0) {
+    return {
+      error: new Error(
+        'No se pudo eliminar la partida — es posible que no exista o que no tengas permisos.'
+      ),
+    };
+  }
+
+  return {};
 };
 

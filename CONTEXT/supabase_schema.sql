@@ -46,6 +46,10 @@ CREATE POLICY "Los usuarios pueden actualizar sus propias partidas"
 ON public.games FOR UPDATE 
 USING (auth.uid() = user_id);
 
+CREATE POLICY "Los usuarios pueden eliminar sus propias partidas" 
+ON public.games FOR DELETE 
+USING (auth.uid() = user_id);
+
 -- 6. Trigger para crear perfil automáticamente al registrarse
 CREATE OR REPLACE FUNCTION public.handle_new_user() 
 RETURNS TRIGGER AS $$

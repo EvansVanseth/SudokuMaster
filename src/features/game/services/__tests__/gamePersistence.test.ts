@@ -134,14 +134,33 @@ describe('gamePersistence', () => {
 
   it('elimina una partida correctamente', async () => {
     const mocks = getMocks();
+    const deletedRecord = { id: 'game-id-5' };
     mocks.fromMock.mockReturnValue({
       delete: vi.fn().mockReturnValue({
-        eq: vi.fn().mockResolvedValue({ error: null }),
+        eq: vi.fn().mockReturnValue({
+          select: vi.fn().mockResolvedValue({ data: [deletedRecord], error: null }),
+        }),
       }),
     });
 
     const result = await deleteSavedGame('game-id-5');
 
     expect(result.error).toBeUndefined();
+  });
+
+  it('retorna error si el delete de Supabase no afecta filas (RLS bloquea silenciosamente)', async () => {
+    const mocks = getMocks();
+    mocks.fromMock.mockReturnValue({
+      delete: vi.fn().mockReturnValue({
+        eq: vi.fn().mockReturnValue({
+          select: vi.fn().mockResolvedValue({ data: [], error: null }),
+        }),
+      }),
+    });
+
+    const result = await deleteSavedGame('game-id-5');
+
+    expect(result.error).toBeDefined();
+    expect(result.error!.message).toContain('No se pudo eliminar');
   });
 });
