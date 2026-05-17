@@ -11,7 +11,7 @@
   --glass-border: rgba(255, 255, 255, 0.1);
 
   /* Sudoku board & cell system */
-  --cell-bg: #eef3fa;
+  --cell-bg: #c2d4e4;
   --cell-text-clue: #1e293b;
   --cell-text-user: #2563eb;
   --cell-bg-selected: #dbeafe;

@@ -15,6 +15,7 @@
 
 .button {
   padding: 0.75rem;
+  font-family: inherit;
   font-weight: var(--cell-font-weight);
   font-size: var(--cell-font-size);
   background: var(--cell-bg);
