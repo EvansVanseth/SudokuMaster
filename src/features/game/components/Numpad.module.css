@@ -15,18 +15,18 @@
 
 .button {
   padding: 0.75rem;
-  font-weight: bold;
-  font-size: 1.25rem;
-  background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(56,189,248,0.14));
-  color: var(--text-main);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-weight: var(--cell-font-weight);
+  font-size: var(--cell-font-size);
+  background: var(--cell-bg);
+  color: var(--cell-text-clue);
+  border: 1px solid var(--grid-line);
   border-radius: 12px;
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .button:hover {
-  background: rgba(56, 189, 248, 0.22);
+  background: var(--cell-bg-selected);
   transform: translateY(-1px);
 }
 
@@ -38,10 +38,10 @@
 
 .deleteButton {
   grid-column: span 3 / span 3;
-  font-size: 1rem;
+  font-size: calc(var(--cell-font-size) * 0.8);
   background-color: rgba(239, 68, 68, 0.2);
   border-color: rgba(239, 68, 68, 0.5);
-  color: #fca5a5; /* red-300 */
+  color: #fca5a5;
 }
 
 .deleteButton:hover {
@@ -66,7 +66,6 @@
 
   .button {
     padding: 0.6rem;
-    font-size: 1rem;
   }
 
   .deleteButton {

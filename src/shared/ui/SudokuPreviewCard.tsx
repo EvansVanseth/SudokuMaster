@@ -1,9 +1,15 @@
 import type { FC } from 'react';
 import { Link } from 'react-router-dom';
-import './SudokuPreviewCard.css';
+import styles from './SudokuPreviewCard.module.css';
 import type { Difficulty } from '../../domain/types';
 
 type Grid = (number | null)[][];
+
+const badgeClass: Record<Difficulty, string> = {
+  easy: styles.badgeEasy,
+  medium: styles.badgeMedium,
+  hard: styles.badgeHard,
+};
 
 interface Props {
   title: string;
@@ -13,28 +19,28 @@ interface Props {
 }
 
 export const SudokuPreviewCard: FC<Props> = ({ title, difficulty, grid, onPreviewSelect }) => {
-  const difficultyMap = {
+  const difficultyLabel: Record<Difficulty, string> = {
     easy: 'Fácil',
     medium: 'Medio',
     hard: 'Difícil',
   };
 
   return (
-    <Link to={`/game/${difficulty}`} className="sudoku-preview-card-link" onClick={onPreviewSelect}>
-      <div className="sudoku-preview-card">
-        <div className="sudoku-grid-preview">
+    <Link to={`/game/${difficulty}`} className={styles.link} onClick={onPreviewSelect}>
+      <div className={styles.card}>
+        <div className={styles.grid}>
           {grid.map((row, rowIndex) =>
             row.map((cell, colIndex) => (
-              <div key={`${rowIndex}-${colIndex}`} className="sudoku-cell-preview">
+              <div key={`${rowIndex}-${colIndex}`} className={styles.cell}>
                 {cell !== 0 && cell}
               </div>
             ))
           )}
         </div>
-        <div className="card-content">
+        <div className={styles.cardContent}>
           <h3>{title}</h3>
-          <span className={`difficulty-badge difficulty-${difficulty}`}>
-            {difficultyMap[difficulty]}
+          <span className={`${styles.badge} ${badgeClass[difficulty]}`}>
+            {difficultyLabel[difficulty]}
           </span>
         </div>
       </div>

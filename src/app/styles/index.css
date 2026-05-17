@@ -9,6 +9,20 @@
   --text-muted: #94a3b8;
   --accent: #818cf8;
   --glass-border: rgba(255, 255, 255, 0.1);
+
+  /* Sudoku board & cell system */
+  --cell-bg: #eef3fa;
+  --cell-text-clue: #1e293b;
+  --cell-text-user: #2563eb;
+  --cell-bg-selected: #dbeafe;
+  --cell-bg-related: #e2e8f0;
+  --cell-bg-solved: #e0f2fe;
+  --cell-text-solved: #075985;
+  --cell-error: #ef4444;
+  --cell-font-size: clamp(0.8125rem, 1.8vw, 1.25rem);
+  --cell-font-weight: 700;
+  --grid-line: #cbd5e1;
+  --grid-line-strong: #94a3b8;
 }
 
 * {

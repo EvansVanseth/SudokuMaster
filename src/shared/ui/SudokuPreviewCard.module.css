@@ -1,0 +1,91 @@
+.link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(9, 1fr);
+  background-color: var(--grid-line-strong);
+  padding: 5px;
+  border-radius: 8px;
+  aspect-ratio: 1 / 1;
+  gap: 1px;
+}
+
+.cell {
+  background-color: var(--cell-bg);
+  color: var(--cell-text-clue);
+  font-size: var(--cell-font-size);
+  font-weight: var(--cell-font-weight);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-right: 1px solid var(--grid-line);
+  border-bottom: 1px solid var(--grid-line);
+}
+
+.cell:nth-child(3n) {
+  border-right-width: 3px;
+  border-right-color: var(--grid-line-strong);
+}
+.cell:nth-child(9n) {
+  border-right: none;
+}
+.grid > .cell:nth-child(n+19):nth-child(-n+27),
+.grid > .cell:nth-child(n+46):nth-child(-n+54) {
+  border-bottom-width: 3px;
+  border-bottom-color: var(--grid-line-strong);
+}
+.grid > .cell:nth-child(n+73):nth-child(-n+81) {
+  border-bottom: none;
+}
+
+.cardContent {
+  padding: 1rem;
+  text-align: center;
+}
+
+.cardContent h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.badgeEasy {
+  background-color: #28a745;
+}
+
+.badgeMedium {
+  background-color: #ffc107;
+  color: #1e293b;
+}
+
+.badgeHard {
+  background-color: #dc3545;
+}
