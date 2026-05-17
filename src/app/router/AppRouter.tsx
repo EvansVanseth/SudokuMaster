@@ -16,6 +16,7 @@ import {
   type RemoteGameRecord,
 } from '../../features/game/services/gamePersistence';
 import { restoreSessionGameState } from '../../features/game/store/gameStore';
+import { Modal } from '../../shared/ui/Modal';
 
 const ProtectedRoute: FC<{ children: ReactNode }> = ({ children }) => {
   const { user, isLoading } = useAuth();
@@ -66,6 +67,7 @@ const Dashboard: FC = () => {
   const [pendingGames, setPendingGames] = useState<RemoteGameRecord[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [gameToDelete, setGameToDelete] = useState<string | null>(null);
 
   const getDisplayName = () => {
     if (!user) return '';
@@ -117,16 +119,26 @@ const Dashboard: FC = () => {
     navigate(`/game/${restoredState.difficulty}`);
   };
 
-  const handleDelete = async (savedGameId: string) => {
-    if (!window.confirm('¿Estás seguro de que deseas eliminar esta partida?')) return;
+  const handleDelete = (savedGameId: string) => {
+    setGameToDelete(savedGameId);
+  };
 
-    const { error } = await deleteSavedGame(savedGameId);
+  const confirmDelete = async () => {
+    if (!gameToDelete) return;
+
+    const { error } = await deleteSavedGame(gameToDelete);
     if (error) {
       setError(error.message);
+      setGameToDelete(null);
       return;
     }
 
-    setPendingGames((prev) => prev.filter((g) => g.id !== savedGameId));
+    setPendingGames((prev) => prev.filter((g) => g.id !== gameToDelete));
+    setGameToDelete(null);
+  };
+
+  const cancelDelete = () => {
+    setGameToDelete(null);
   };
 
   const difficultyMap: Record<string, string> = {
@@ -136,84 +148,102 @@ const Dashboard: FC = () => {
   };
 
   return (
-    <div className="glass-card" style={{ maxWidth: '900px', margin: '0 auto', textAlign: 'center' }}>
-      <h1>¡Bienvenido, {getDisplayName()}!</h1>
-      <p style={{ marginBottom: '2.5rem' }}>
-        Tu progreso se guarda automáticamente mientras juegas. Reanuda una partida pendiente o comienza una nueva.
-      </p>
+    <>
+      <div className="glass-card" style={{ maxWidth: '900px', margin: '0 auto', textAlign: 'center' }}>
+        <h1>¡Bienvenido, {getDisplayName()}!</h1>
+        <p style={{ marginBottom: '2.5rem' }}>
+          Tu progreso se guarda automáticamente mientras juegas. Reanuda una partida pendiente o comienza una nueva.
+        </p>
 
-      <section>
-        <h2 style={{ marginBottom: '1rem' }}>Nueva Partida</h2>
-        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-          <button onClick={() => navigate('/game/easy')} className="btn-primary" style={{ minWidth: '120px' }}>
-            Fácil
+        <section>
+          <h2 style={{ marginBottom: '1rem' }}>Nueva Partida</h2>
+          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <button onClick={() => navigate('/game/easy')} className="btn-primary" style={{ minWidth: '120px' }}>
+              Fácil
+            </button>
+            <button onClick={() => navigate('/game/medium')} className="btn-secondary" style={{ minWidth: '120px' }}>
+              Media
+            </button>
+            <button onClick={() => navigate('/game/hard')} className="btn-secondary" style={{ minWidth: '120px' }}>
+              Difícil
+            </button>
+          </div>
+        </section>
+
+        <section style={{ marginTop: '4rem' }}>
+          <h2 style={{ marginBottom: '1.5rem' }}>Partidas pendientes</h2>
+          {error && <p style={{ color: '#ff6b6b' }}>Error: {error}</p>}
+          {isLoading ? (
+            <p>Cargando partidas pendientes...</p>
+          ) : pendingGames.length === 0 ? (
+            <p>No tienes partidas pendientes. Comienza una nueva partida para guardarla automáticamente.</p>
+          ) : (
+            <div style={{ width: '100%', overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <thead>
+                  <tr>
+                    <th style={{ textAlign: 'left', padding: '0.75rem 0' }}>Dificultad</th>
+                    <th style={{ textAlign: 'left', padding: '0.75rem 0' }}>Tiempo</th>
+                    <th style={{ textAlign: 'left', padding: '0.75rem 0' }}>Actualizado</th>
+                    <th style={{ textAlign: 'center', padding: '0.75rem 0' }}>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {pendingGames.map((game) => (
+                    <tr key={game.id} style={{ borderTop: '1px solid rgba(255,255,255,0.12)' }}>
+                      <td data-label="Dificultad" style={{ padding: '1rem 0', textAlign: 'left' }}>
+                        {game.difficulty ? (difficultyMap[game.difficulty] || game.difficulty) : 'Desconocida'}
+                      </td>
+                      <td data-label="Tiempo" style={{ padding: '1rem 0', textAlign: 'left' }}>
+                        {Math.floor(game.time_spent / 60)} min {game.time_spent % 60} seg
+                      </td>
+                      <td data-label="Actualizado" style={{ padding: '1rem 0', textAlign: 'left' }}>
+                        {new Date(game.updated_at).toLocaleString()}
+                      </td>
+                      <td style={{ padding: '1rem 0' }}>
+                        <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                          <button onClick={() => handleResume(game.id)} className="btn-primary" style={{ padding: '0.6rem 1rem' }}>
+                            Reanudar
+                          </button>
+                          <button onClick={() => handleDelete(game.id)} className="btn-danger" style={{ padding: '0.6rem 1rem' }}>
+                            Eliminar
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </section>
+
+        <div style={{ marginTop: '5rem', paddingTop: '2rem', borderTop: '1px solid rgba(255,255,255,0.1)', display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <button onClick={() => navigate('/')} className="btn-secondary">
+            Volver al Inicio
           </button>
-          <button onClick={() => navigate('/game/medium')} className="btn-secondary" style={{ minWidth: '120px' }}>
-            Media
-          </button>
-          <button onClick={() => navigate('/game/hard')} className="btn-secondary" style={{ minWidth: '120px' }}>
-            Difícil
+          <button onClick={signOut} className="btn-secondary">
+            Cerrar Sesión
           </button>
         </div>
-      </section>
-
-      <section style={{ marginTop: '4rem' }}>
-        <h2 style={{ marginBottom: '1.5rem' }}>Partidas pendientes</h2>
-        {error && <p style={{ color: '#ff6b6b' }}>Error: {error}</p>}
-        {isLoading ? (
-          <p>Cargando partidas pendientes...</p>
-        ) : pendingGames.length === 0 ? (
-          <p>No tienes partidas pendientes. Comienza una nueva partida para guardarla automáticamente.</p>
-        ) : (
-          <div style={{ width: '100%', overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr>
-                  <th style={{ textAlign: 'left', padding: '0.75rem 0' }}>Dificultad</th>
-                  <th style={{ textAlign: 'left', padding: '0.75rem 0' }}>Tiempo</th>
-                  <th style={{ textAlign: 'left', padding: '0.75rem 0' }}>Actualizado</th>
-                  <th style={{ textAlign: 'center', padding: '0.75rem 0' }}>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {pendingGames.map((game) => (
-                  <tr key={game.id} style={{ borderTop: '1px solid rgba(255,255,255,0.12)' }}>
-                    <td data-label="Dificultad" style={{ padding: '1rem 0', textAlign: 'left' }}>
-                      {game.difficulty ? (difficultyMap[game.difficulty] || game.difficulty) : 'Desconocida'}
-                    </td>
-                    <td data-label="Tiempo" style={{ padding: '1rem 0', textAlign: 'left' }}>
-                      {Math.floor(game.time_spent / 60)} min {game.time_spent % 60} seg
-                    </td>
-                    <td data-label="Actualizado" style={{ padding: '1rem 0', textAlign: 'left' }}>
-                      {new Date(game.updated_at).toLocaleString()}
-                    </td>
-                    <td style={{ padding: '1rem 0' }}>
-                      <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-                        <button onClick={() => handleResume(game.id)} className="btn-primary" style={{ padding: '0.6rem 1rem' }}>
-                          Reanudar
-                        </button>
-                        <button onClick={() => handleDelete(game.id)} className="btn-danger" style={{ padding: '0.6rem 1rem' }}>
-                          Eliminar
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </section>
-
-      <div style={{ marginTop: '5rem', paddingTop: '2rem', borderTop: '1px solid rgba(255,255,255,0.1)', display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-        <button onClick={() => navigate('/')} className="btn-secondary">
-          Volver al Inicio
-        </button>
-        <button onClick={signOut} className="btn-secondary">
-          Cerrar Sesión
-        </button>
       </div>
-    </div>
+
+      <Modal isOpen={gameToDelete !== null} onClose={cancelDelete}>
+        <h2>¿Eliminar partida?</h2>
+        <p>
+          Esta acción <strong>NO se puede deshacer</strong>. La partida se borrará permanentemente
+          y no podrás recuperarla.
+        </p>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginTop: '2rem' }}>
+          <button onClick={cancelDelete} className="btn-secondary">
+            No
+          </button>
+          <button onClick={confirmDelete} className="btn-danger">
+            Sí, eliminar
+          </button>
+        </div>
+      </Modal>
+    </>
   );
 };
 
