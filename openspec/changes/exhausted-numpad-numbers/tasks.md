@@ -27,13 +27,13 @@ Chain strategy: size-exception
 
 ## Phase 2: Numpad Integration
 
-- [ ] 2.1 **Modify `src/features/game/components/Numpad.tsx`** — subscribe to `board` from store, derive exhausted set via `useMemo`, add `exhaustedNumbers.has(num)` to per-button `disabled` alongside existing `status === 'solved'`; Borrar remains unaffected
-- [ ] 2.2 **Create `src/features/game/__tests__/Numpad.test.tsx`** — component tests covering: exhausted button disabled, non-exhausted enabled, re-enable on delete, new game reset, Borrar unaffected by exhaustion, solved still disables all
+- [x] 2.1 **Modify `src/features/game/components/Numpad.tsx`** — subscribe to `board` from store, derive exhausted set via `useMemo`, add `exhaustedNumbers.has(num)` to per-button `disabled` alongside existing `status === 'solved'`; Borrar remains unaffected
+- [x] 2.2 **Create `src/features/game/__tests__/Numpad.test.tsx`** — component tests covering: exhausted button disabled, non-exhausted enabled, re-enable on delete, new game reset, Borrar unaffected by exhaustion, solved still disables all
 
 ## Verification Checklist
 
-- [ ] All 5 selector scenarios pass (full board, partial, multiple, empty, none)
-- [ ] All 6 Numpad component scenarios pass
-- [ ] All 41 existing tests still pass
-- [ ] No CSS changes required (`.button:disabled` handles it)
-- [ ] No domain-layer files touched
+- [x] All 5 selector scenarios pass (full board, partial, multiple, empty, none)
+- [x] All 6 Numpad component scenarios pass
+- [x] All existing tests still pass (previously 91, now 103 total)
+- [x] No CSS changes required (`.button:disabled` handles it)
+- [x] No domain-layer files touched
