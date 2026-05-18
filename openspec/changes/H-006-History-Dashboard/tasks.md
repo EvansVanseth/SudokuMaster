@@ -11,10 +11,9 @@
 | Delivery strategy | auto-chain |
 | Chain strategy | feature-branch-chain |
 
-Decision needed before apply: Yes
-Chained PRs recommended: Yes
-Chain strategy: pending
-400-line budget risk: High
+Decision needed before apply: Yes (resolved: auto-chain via feature-branch-chain)
+Chained PRs recommended: Yes (resolved: PR 1 complete)
+400-line budget risk: High (resolved: keep PR 1 under ~450 lines)
 
 ### Suggested Work Units
 
@@ -48,14 +47,20 @@ Chain strategy: pending
 
 ## Phase 4: History Feature
 
-- [ ] 4.1 Create `src/features/history/FilterBar.tsx` (difficulty `<select>` + sort toggle, no `board` in select)
-- [ ] 4.2 Create `src/features/history/HistoryList.tsx` (desktop table, mobile stacked cards)
-- [ ] 4.3 Create `src/features/history/HistoryPage.tsx` + `HistoryPage.module.css` (composes FilterBar + HistoryList)
-- [ ] 4.4 Write RTL tests for HistoryPage (filter by difficulty, sort toggle, empty state, column-exclusion verified)
+- [x] 4.1 Create `src/features/history/components/FilterBar.tsx` + `FilterBar.module.css` (difficulty `<select>` + sort toggle)
+- [x] 4.2 Create `src/features/history/components/HistoryList.tsx` + `HistoryList.module.css` (desktop table, mobile stacked cards)
+- [x] 4.3 Create `src/features/history/pages/HistoryPage.tsx` + `HistoryPage.module.css` (composes FilterBar + HistoryList)
+- [x] 4.4 Write RTL tests for FilterBar (8), HistoryList (7), HistoryPage (6), AppRouter (1) — 22 new tests
 
 ## Phase 5: Router + Verify
 
 - [x] 5.1 Remove inline `Dashboard` from `AppRouter.tsx`; import `DashboardPage` from `features/dashboard/`
 - [x] 5.2 Import `ProtectedRoute` from `features/auth/components/` in `AppRouter.tsx`
-- [ ] 5.3 Add `/dashboard/history` route to `AppRouter.tsx` with `ProtectedRoute` (PR 2)
-- [x] 5.4 Run full test suite — confirm all existing tests pass + new persistence and RTL tests pass
+- [x] 5.3 Add `/dashboard/history` route to `AppRouter.tsx` with `ProtectedRoute`
+- [x] 5.4 Run full test suite — 91 tests passing (69 existing + 22 new)
+- [x] 5.5 Post-apply: unify difficulty colors as CSS variables (--color-easy/medium/hard/global)
+- [x] 5.6 Post-apply: regroup StatsCards into 4 grouped cards with colored borders
+- [x] 5.7 Post-apply: color NewGameSection buttons by difficulty
+- [x] 5.8 Post-apply: add difficulty-colored board border (3px)
+- [x] 5.9 Post-apply: fix table header/data cell alignment (horizontal padding)
+- [x] 5.10 Post-apply: add nav links between Dashboard/History, remove win rate
