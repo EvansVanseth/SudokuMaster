@@ -1,8 +1,19 @@
 import type { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { GameStats } from '../../../domain/types';
-import { StatCard } from '../../../shared/ui/StatCard';
+import type { Difficulty, GameStats } from '../../../domain/types';
 import styles from './StatsCards.module.css';
+
+const difficultyConfig: {
+  key: 'global' | Difficulty;
+  label: string;
+  colorVar: string;
+  textVar: string;
+}[] = [
+  { key: 'global', label: 'Global', colorVar: '--color-global', textVar: '--color-global-text' },
+  { key: 'easy', label: 'Fácil', colorVar: '--color-easy', textVar: '--color-easy-text' },
+  { key: 'medium', label: 'Media', colorVar: '--color-medium', textVar: '--color-medium-text' },
+  { key: 'hard', label: 'Difícil', colorVar: '--color-hard', textVar: '--color-hard-text' },
+];
 
 interface Props {
   stats: GameStats;
@@ -14,38 +25,48 @@ export const StatsCards: FC<Props> = ({ stats }) => {
   return (
     <section className={styles.container}>
       <div className={styles.grid}>
-        <StatCard label="Total Partidas" value={stats.totalGames} />
+        {difficultyConfig.map(({ key, label, colorVar }) => {
+          const borderStyle = { borderColor: `var(${colorVar})` };
 
-        <StatCard
-          label="Completadas (Fácil)"
-          value={stats.completedByDifficulty.easy}
-        />
-        <StatCard
-          label="Completadas (Media)"
-          value={stats.completedByDifficulty.medium}
-        />
-        <StatCard
-          label="Completadas (Difícil)"
-          value={stats.completedByDifficulty.hard}
-        />
-        <StatCard label="Completadas (Total)" value={stats.completedGames} />
+          if (key === 'global') {
+            return (
+              <div key={key} className={styles.groupCard} style={borderStyle}>
+                <span className={styles.groupLabel} style={{ color: `var(${colorVar})` }}>
+                  {label}
+                </span>
+                <div className={styles.statRow}>
+                  <span className={styles.statValue}>{stats.totalGames}</span>
+                  <span className={styles.statLabel}>Total Partidas</span>
+                </div>
+                <div className={styles.statRow}>
+                  <span className={styles.statValue}>
+                    {Math.round(stats.avgTimeOverall / 60)}m
+                  </span>
+                  <span className={styles.statLabel}>Tiempo Promedio</span>
+                </div>
+              </div>
+            );
+          }
 
-        <StatCard
-          label="Tiempo Prom. (Fácil)"
-          value={`${Math.round(stats.avgTimeByDifficulty.easy / 60)}m`}
-        />
-        <StatCard
-          label="Tiempo Prom. (Media)"
-          value={`${Math.round(stats.avgTimeByDifficulty.medium / 60)}m`}
-        />
-        <StatCard
-          label="Tiempo Prom. (Difícil)"
-          value={`${Math.round(stats.avgTimeByDifficulty.hard / 60)}m`}
-        />
-        <StatCard
-          label="Tiempo Prom. (Global)"
-          value={`${Math.round(stats.avgTimeOverall / 60)}m`}
-        />
+          const diff = key as Difficulty;
+          return (
+            <div key={key} className={styles.groupCard} style={borderStyle}>
+              <span className={styles.groupLabel} style={{ color: `var(${colorVar})` }}>
+                {label}
+              </span>
+              <div className={styles.statRow}>
+                <span className={styles.statValue}>{stats.completedByDifficulty[diff]}</span>
+                <span className={styles.statLabel}>Completadas</span>
+              </div>
+              <div className={styles.statRow}>
+                <span className={styles.statValue}>
+                  {Math.round(stats.avgTimeByDifficulty[diff] / 60)}m
+                </span>
+                <span className={styles.statLabel}>Tiempo Promedio</span>
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       <button

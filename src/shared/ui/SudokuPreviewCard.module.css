@@ -78,14 +78,16 @@
 }
 
 .badgeEasy {
-  background-color: #28a745;
+  background-color: var(--color-easy);
+  color: var(--color-easy-text);
 }
 
 .badgeMedium {
-  background-color: #ffc107;
-  color: #1e293b;
+  background-color: var(--color-medium);
+  color: var(--color-medium-text);
 }
 
 .badgeHard {
-  background-color: #dc3545;
+  background-color: var(--color-hard);
+  color: var(--color-hard-text);
 }

@@ -61,7 +61,7 @@ describe('DashboardPage', () => {
     });
   });
 
-  it('renderiza stats cards con valores correctos', async () => {
+  it('renderiza stats cards agrupados con valores correctos', async () => {
     vi.mocked(gamePersistence.getGameStats).mockResolvedValue(mockStats);
     vi.mocked(gamePersistence.loadPendingGamesForUser).mockResolvedValue([]);
 
@@ -71,9 +71,18 @@ describe('DashboardPage', () => {
       expect(screen.getByText('10')).toBeInTheDocument();
     });
 
+    // Global card
+    expect(screen.getByText('Global')).toBeInTheDocument();
     expect(screen.getByText('Total Partidas')).toBeInTheDocument();
-    expect(screen.getByText('Completadas (Total)')).toBeInTheDocument();
-    expect(screen.getByText('7')).toBeInTheDocument();
+
+    // Difficulty cards + NewGameSection buttons comparten las etiquetas
+    expect(screen.getAllByText('Fácil').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('Media').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('Difícil').length).toBeGreaterThanOrEqual(1);
+
+    // 3 completadas en Fácil, 2 en Media, 2 en Difícil
+    expect(screen.getAllByText('3')).toHaveLength(1);
+    expect(screen.getAllByText('2')).toHaveLength(2);
   });
 
   it('muestra el nombre del usuario en el saludo', async () => {
