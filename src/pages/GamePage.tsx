@@ -29,11 +29,30 @@ export const GamePage: React.FC = () => {
   React.useEffect(() => {
     if (!difficulty) return;
 
-    const { board, difficulty: savedDifficulty } = useGameStore.getState();
-    if (board.length > 0 && savedDifficulty === difficulty) {
+    const { board, difficulty: storedDifficulty, savedGameId } = useGameStore.getState();
+
+    // CASO 1: Board vacío → generar nueva partida
+    if (board.length === 0) {
+      useGameStore.getState().startGame(difficulty);
       return;
     }
 
+    // CASO 2: Board existe con la misma dificultad
+    if (storedDifficulty === difficulty) {
+      // Si tiene savedGameId → es una REANUDACIÓN explícita desde Supabase
+      // La cargó Dashboard "Reanudar" via restoreSessionGameState con un ID real
+      if (savedGameId) {
+        return;
+      }
+      // Si NO tiene savedGameId → es una partida NUEVA, seteada explícitamente
+      // por: (a) Landing Page preview via restoreSessionGameState, o
+      //      (b) Dashboard "Nueva Partida" via startGame()
+      // En ambos casos el estado ya está seteado → mantenerlo
+      return;
+    }
+
+    // CASO 3: Board existe pero la dificultad NO coincide con la ruta
+    // Ej: sessionStorage tenía 'medium' pero navegaste a /game/easy
     useGameStore.getState().startGame(difficulty);
   }, [difficulty]);
 

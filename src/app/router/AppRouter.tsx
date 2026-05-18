@@ -15,7 +15,7 @@ import {
   remoteGameRecordToPersistedState,
   type RemoteGameRecord,
 } from '../../features/game/services/gamePersistence';
-import { restoreSessionGameState } from '../../features/game/store/gameStore';
+import { restoreSessionGameState, useGameStore } from '../../features/game/store/gameStore';
 import { Modal } from '../../shared/ui/Modal';
 
 const ProtectedRoute: FC<{ children: ReactNode }> = ({ children }) => {
@@ -158,13 +158,34 @@ const Dashboard: FC = () => {
         <section>
           <h2 style={{ marginBottom: '1rem' }}>Nueva Partida</h2>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <button onClick={() => navigate('/game/easy')} className="btn-primary" style={{ minWidth: '120px' }}>
+            <button
+              onClick={() => {
+                useGameStore.getState().startGame('easy');
+                navigate('/game/easy');
+              }}
+              className="btn-primary"
+              style={{ minWidth: '120px' }}
+            >
               Fácil
             </button>
-            <button onClick={() => navigate('/game/medium')} className="btn-secondary" style={{ minWidth: '120px' }}>
+            <button
+              onClick={() => {
+                useGameStore.getState().startGame('medium');
+                navigate('/game/medium');
+              }}
+              className="btn-secondary"
+              style={{ minWidth: '120px' }}
+            >
               Media
             </button>
-            <button onClick={() => navigate('/game/hard')} className="btn-secondary" style={{ minWidth: '120px' }}>
+            <button
+              onClick={() => {
+                useGameStore.getState().startGame('hard');
+                navigate('/game/hard');
+              }}
+              className="btn-secondary"
+              style={{ minWidth: '120px' }}
+            >
               Difícil
             </button>
           </div>
