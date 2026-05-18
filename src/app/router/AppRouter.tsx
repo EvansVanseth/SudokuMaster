@@ -9,6 +9,7 @@ import { RegisterPage } from '../pages/RegisterPage';
 import { GamePage } from '../../pages/GamePage';
 import { AuthCallback } from '../pages/AuthCallback';
 import { DashboardPage } from '../../features/dashboard/pages/DashboardPage';
+import { HistoryPage } from '../../features/history/pages/HistoryPage';
 
 const LoginPage: FC = () => {
   const { user } = useAuth();
@@ -49,6 +50,14 @@ export const AppRouter: FC = () => {
           element={
             <ProtectedRoute>
               <DashboardPage />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/dashboard/history" 
+          element={
+            <ProtectedRoute>
+              <HistoryPage />
             </ProtectedRoute>
           } 
         />
