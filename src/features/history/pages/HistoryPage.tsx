@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import type { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../features/auth/hooks/useAuth';
 import { loadCompletedGamesForUser } from '../../../features/game/services/gamePersistence';
 import type { Difficulty, GameSummary } from '../../../domain/types';
@@ -9,6 +10,7 @@ import styles from './HistoryPage.module.css';
 
 export const HistoryPage: FC = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   const [games, setGames] = useState<GameSummary[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -73,6 +75,14 @@ export const HistoryPage: FC = () => {
         />
 
         <HistoryList games={games} isLoading={isLoading} error={error} />
+
+        <button
+          onClick={() => navigate('/dashboard')}
+          className="btn-secondary"
+          style={{ marginTop: '2rem' }}
+        >
+          Volver al Dashboard
+        </button>
       </div>
     </div>
   );

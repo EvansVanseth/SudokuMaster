@@ -117,18 +117,17 @@ export const getGameStats = async (
 
   const totalGames = rows.length;
   const completedGames = rows.filter((r) => r.status === 'completed').length;
-  const wonGames = rows.filter((r) => r.is_winner).length;
-
-  const winRate = completedGames > 0 ? (wonGames / completedGames) * 100 : 0;
 
   const totalTime = rows.reduce((sum, r) => sum + r.time_spent, 0);
   const avgTimeOverall = totalGames > 0 ? totalTime / totalGames : 0;
 
   const difficulties: Difficulty[] = ['easy', 'medium', 'hard'];
+  const completedByDifficulty = {} as Record<Difficulty, number>;
   const avgTimeByDifficulty = {} as Record<Difficulty, number>;
 
   for (const diff of difficulties) {
     const filtered = rows.filter((r) => r.difficulty === diff);
+    completedByDifficulty[diff] = filtered.filter((r) => r.status === 'completed').length;
     avgTimeByDifficulty[diff] =
       filtered.length > 0
         ? filtered.reduce((sum, r) => sum + r.time_spent, 0) / filtered.length
@@ -138,7 +137,7 @@ export const getGameStats = async (
   return {
     totalGames,
     completedGames,
-    winRate,
+    completedByDifficulty,
     avgTimeOverall,
     avgTimeByDifficulty,
   };

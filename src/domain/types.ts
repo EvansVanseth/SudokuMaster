@@ -66,7 +66,7 @@ export interface GameSummary {
 export interface GameStats {
   totalGames: number
   completedGames: number
-  winRate: number
+  completedByDifficulty: Record<Difficulty, number>
   avgTimeOverall: number
   avgTimeByDifficulty: Record<Difficulty, number>
 }

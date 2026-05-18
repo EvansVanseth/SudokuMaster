@@ -30,7 +30,7 @@ const mockUser = { id: 'user-123', email: 'test@test.com', user_metadata: { disp
 const mockStats: GameStats = {
   totalGames: 10,
   completedGames: 7,
-  winRate: 71.43,
+  completedByDifficulty: { easy: 3, medium: 2, hard: 2 },
   avgTimeOverall: 150,
   avgTimeByDifficulty: { easy: 60, medium: 180, hard: 300 },
 };
@@ -72,8 +72,8 @@ describe('DashboardPage', () => {
     });
 
     expect(screen.getByText('Total Partidas')).toBeInTheDocument();
+    expect(screen.getByText('Completadas (Total)')).toBeInTheDocument();
     expect(screen.getByText('7')).toBeInTheDocument();
-    expect(screen.getByText('71%')).toBeInTheDocument();
   });
 
   it('muestra el nombre del usuario en el saludo', async () => {
