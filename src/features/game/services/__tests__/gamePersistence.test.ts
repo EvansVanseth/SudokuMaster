@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import type { GameSummary, Difficulty } from '../../../../domain/types';
+import type { GameSummary } from '../../../../domain/types';
 import {
   saveGameStateToSupabase,
   loadPendingGamesForUser,
@@ -229,7 +229,8 @@ describe('gamePersistence', () => {
       const mocks = getMocks();
       setQueryResult(completedGames);
 
-      const result = await loadCompletedGamesForUser('user-123');
+      const raw = await loadCompletedGamesForUser('user-123');
+      const result = raw as GameSummary[];
 
       expect(mocks.fromMock).toHaveBeenCalledWith('games');
       // Must NOT select '*' or 'board'
@@ -251,7 +252,8 @@ describe('gamePersistence', () => {
       const mocks = getMocks();
       setQueryResult([completedGames[0]]);
 
-      const result = await loadCompletedGamesForUser('user-123', { difficulty: 'easy' });
+      const raw = await loadCompletedGamesForUser('user-123', { difficulty: 'easy' });
+      const result = raw as GameSummary[];
 
       expect(mocks.eqMock).toHaveBeenCalledWith('difficulty', 'easy');
       expect(result).toHaveLength(1);
@@ -262,7 +264,8 @@ describe('gamePersistence', () => {
       const mocks = getMocks();
       setQueryResult([...completedGames].reverse());
 
-      const result = await loadCompletedGamesForUser('user-123', { sortOrder: 'asc' });
+      const raw = await loadCompletedGamesForUser('user-123', { sortOrder: 'asc' });
+      const result = raw as GameSummary[];
 
       expect(mocks.orderMock).toHaveBeenCalledWith('updated_at', { ascending: true });
       expect(result).toHaveLength(2);
@@ -301,7 +304,8 @@ describe('gamePersistence', () => {
       const mocks = getMocks();
       setQueryResult(allGames);
 
-      const stats = await getGameStats('user-123');
+      const raw = await getGameStats('user-123');
+      const stats = raw as import('../../../../domain/types').GameStats;
 
       expect(mocks.selectMock).toHaveBeenCalledWith(
         'id, user_id, difficulty, status, time_spent, is_winner, created_at, updated_at'
@@ -310,13 +314,14 @@ describe('gamePersistence', () => {
       expect(mocks.orderMock).not.toHaveBeenCalled(); // No sort needed for aggregation
 
       expect(stats.totalGames).toBe(4);
-      expect(stats.completedGames).toBe(3); // 2 completed + 1 extra that's completed too... wait
+      expect(stats.completedGames).toBe(3);
     });
 
     it('calcula win rate correctamente', async () => {
       setQueryResult(allGames);
 
-      const stats = await getGameStats('user-123');
+      const raw = await getGameStats('user-123');
+      const stats = raw as import('../../../../domain/types').GameStats;
 
       // 3 completed games, 2 winners → 67% (rounded)
       expect(stats.winRate).toBeCloseTo(66.67, 0);
@@ -325,7 +330,8 @@ describe('gamePersistence', () => {
     it('calcula tiempo promedio total correctamente', async () => {
       setQueryResult(allGames);
 
-      const stats = await getGameStats('user-123');
+      const raw = await getGameStats('user-123');
+      const stats = raw as import('../../../../domain/types').GameStats;
 
       // (60 + 120 + 30 + 180) / 4 = 97.5
       expect(stats.avgTimeOverall).toBeCloseTo(97.5, 0);
@@ -334,7 +340,8 @@ describe('gamePersistence', () => {
     it('desglosa tiempo promedio por dificultad', async () => {
       setQueryResult(allGames);
 
-      const stats = await getGameStats('user-123');
+      const raw = await getGameStats('user-123');
+      const stats = raw as import('../../../../domain/types').GameStats;
 
       // easy: (60 + 180) / 2 = 120
       // medium: 120 / 1 = 120
@@ -347,7 +354,8 @@ describe('gamePersistence', () => {
     it('retorna ceros cuando no hay juegos', async () => {
       setQueryResult([]);
 
-      const stats = await getGameStats('user-123');
+      const raw = await getGameStats('user-123');
+      const stats = raw as import('../../../../domain/types').GameStats;
 
       expect(stats.totalGames).toBe(0);
       expect(stats.completedGames).toBe(0);

@@ -99,8 +99,8 @@ describe('DashboardPage', () => {
   });
 
   it('muestra la lista de partidas pendientes', async () => {
-    vi.mocked(gamePersistence.getGameStats).mockResolvedValue(mockStats);
-    vi.mocked(gamePersistence.loadPendingGamesForUser).mockResolvedValue(mockPendingGames);
+    vi.mocked(gamePersistence.getGameStats).mockResolvedValue(mockStats as any);
+    vi.mocked(gamePersistence.loadPendingGamesForUser).mockResolvedValue(mockPendingGames as any);
 
     renderDashboard();
 
@@ -113,8 +113,8 @@ describe('DashboardPage', () => {
 
   it('abre el modal de confirmación al hacer click en Eliminar', async () => {
     const user = userEvent.setup();
-    vi.mocked(gamePersistence.getGameStats).mockResolvedValue(mockStats);
-    vi.mocked(gamePersistence.loadPendingGamesForUser).mockResolvedValue(mockPendingGames);
+    vi.mocked(gamePersistence.getGameStats).mockResolvedValue(mockStats as any);
+    vi.mocked(gamePersistence.loadPendingGamesForUser).mockResolvedValue(mockPendingGames as any);
     vi.mocked(gamePersistence.deleteSavedGame).mockResolvedValue({});
 
     renderDashboard();
@@ -130,8 +130,8 @@ describe('DashboardPage', () => {
 
   it('llama a deleteSavedGame al confirmar eliminación', async () => {
     const user = userEvent.setup();
-    vi.mocked(gamePersistence.getGameStats).mockResolvedValue(mockStats);
-    vi.mocked(gamePersistence.loadPendingGamesForUser).mockResolvedValue(mockPendingGames);
+    vi.mocked(gamePersistence.getGameStats).mockResolvedValue(mockStats as any);
+    vi.mocked(gamePersistence.loadPendingGamesForUser).mockResolvedValue(mockPendingGames as any);
     vi.mocked(gamePersistence.deleteSavedGame).mockResolvedValue({});
 
     renderDashboard();

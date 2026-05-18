@@ -10,7 +10,7 @@ import {
   getGameStats,
 } from '../../../features/game/services/gamePersistence';
 import { restoreSessionGameState } from '../../../features/game/store/gameStore';
-import type { GameStats, GameSummary } from '../../../domain/types';
+import type { Difficulty, GameStats, GameSummary } from '../../../domain/types';
 import { NewGameSection } from '../components/NewGameSection';
 import { StatsCards } from '../components/StatsCards';
 import { PendingGamesList } from '../components/PendingGamesList';
@@ -54,7 +54,15 @@ export const DashboardPage: FC = () => {
           setError(pendingResult.error.message);
           setPendingGames([]);
         } else {
-          setPendingGames(pendingResult);
+          setPendingGames(
+            pendingResult.map((r) => ({
+              id: r.id,
+              difficulty: r.difficulty as Difficulty,
+              timeSpent: r.time_spent,
+              isWinner: r.is_winner,
+              completedAt: r.updated_at,
+            }))
+          );
         }
       } catch (loadError) {
         setError(loadError instanceof Error ? loadError.message : String(loadError));

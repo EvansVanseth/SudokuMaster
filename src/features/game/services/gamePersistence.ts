@@ -28,7 +28,7 @@ export type RemoteGameSummaryRecord = Omit<RemoteGameRecord, 'board'>;
 
 const toGameSummary = (record: RemoteGameSummaryRecord): GameSummary => ({
   id: record.id,
-  difficulty: record.difficulty,
+  difficulty: record.difficulty as Difficulty,
   timeSpent: record.time_spent,
   isWinner: record.is_winner,
   completedAt: record.updated_at,

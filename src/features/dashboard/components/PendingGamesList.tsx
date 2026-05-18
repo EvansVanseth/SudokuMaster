@@ -15,12 +15,6 @@ interface Props {
   onCancelDelete: () => void;
 }
 
-const difficultyLabel: Record<string, string> = {
-  easy: 'Fácil',
-  medium: 'Media',
-  hard: 'Difícil',
-};
-
 function formatTime(seconds: number): string {
   const min = Math.floor(seconds / 60);
   const seg = seconds % 60;
