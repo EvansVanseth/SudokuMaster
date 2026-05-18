@@ -1,0 +1,38 @@
+.page {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.card {
+  text-align: center;
+}
+
+.greeting {
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  margin-bottom: 2.5rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.pendingSection {
+  margin-top: 3rem;
+}
+
+.footer {
+  margin-top: 5rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 420px) {
+  .page {
+    margin: 1rem auto;
+  }
+}
