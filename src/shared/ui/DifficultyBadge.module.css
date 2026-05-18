@@ -1,0 +1,21 @@
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.easy {
+  background-color: #28a745;
+}
+
+.medium {
+  background-color: #ffc107;
+  color: #1e293b;
+}
+
+.hard {
+  background-color: #dc3545;
+}
