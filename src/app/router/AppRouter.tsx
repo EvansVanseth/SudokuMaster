@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import type { FC, ReactNode } from 'react';
+import type { FC } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../features/auth/hooks/useAuth';
+import { ProtectedRoute } from '../../features/auth/components/ProtectedRoute';
 import { LoginButton } from '../../features/auth/components/LoginButton';
 import { AuthForm } from '../../features/auth/components/AuthForm';
 import { LandingPage } from '../pages/LandingPage';
@@ -17,24 +18,6 @@ import {
 } from '../../features/game/services/gamePersistence';
 import { restoreSessionGameState, useGameStore } from '../../features/game/store/gameStore';
 import { Modal } from '../../shared/ui/Modal';
-
-const ProtectedRoute: FC<{ children: ReactNode }> = ({ children }) => {
-  const { user, isLoading } = useAuth();
-
-  if (isLoading) {
-    return (
-      <div className="glass-card" style={{ textAlign: 'center' }}>
-        <p>Cargando sesión...</p>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
-
-  return <>{children}</>;
-};
 
 const LoginPage: FC = () => {
   const { user } = useAuth();
