@@ -1,0 +1,43 @@
+.title {
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.button {
+  min-width: 120px;
+  padding: 0.8rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  border: none;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+.easy {
+  background-color: var(--color-easy);
+  color: var(--color-easy-text);
+}
+
+.medium {
+  background-color: var(--color-medium);
+  color: var(--color-medium-text);
+}
+
+.hard {
+  background-color: var(--color-hard);
+  color: var(--color-hard-text);
+}

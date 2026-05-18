@@ -1,0 +1,23 @@
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.easy {
+  background-color: var(--color-easy);
+  color: var(--color-easy-text);
+}
+
+.medium {
+  background-color: var(--color-medium);
+  color: var(--color-medium-text);
+}
+
+.hard {
+  background-color: var(--color-hard);
+  color: var(--color-hard-text);
+}

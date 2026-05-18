@@ -9,6 +9,7 @@ export const BoardUI: React.FC = () => {
   const selectedCell = useGameStore((state) => state.selectedCell);
   const selectCell = useGameStore((state) => state.selectCell);
   const status = useGameStore((state) => state.status);
+  const difficulty = useGameStore((state) => state.difficulty);
 
   const handleCellClick = (row: number, col: number) => {
     selectCell(row, col);
@@ -55,7 +56,14 @@ export const BoardUI: React.FC = () => {
           <div className={styles.solvedStamp}>Resuelto</div>
         </div>
       )}
-      <div className={styles.boardGrid}>
+      <div
+        className={styles.boardGrid}
+        style={{
+          '--board-border-color': difficulty
+            ? `var(--color-${difficulty})`
+            : 'var(--grid-line-strong)',
+        } as React.CSSProperties}
+      >
         {board.map((row, rowIndex) =>
           row.map((cell, colIndex) => (
             <div
