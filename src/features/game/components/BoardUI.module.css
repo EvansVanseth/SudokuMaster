@@ -12,7 +12,7 @@
   width: 100%;
   max-width: 500px;
   aspect-ratio: 1 / 1;
-  border: 2px solid var(--board-border-color, var(--grid-line-strong));
+  border: 3px solid var(--board-border-color, var(--grid-line-strong));
 }
 
 .cell {
