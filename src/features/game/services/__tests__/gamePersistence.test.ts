@@ -317,16 +317,6 @@ describe('gamePersistence', () => {
       expect(stats.completedGames).toBe(3);
     });
 
-    it('calcula win rate correctamente', async () => {
-      setQueryResult(allGames);
-
-      const raw = await getGameStats('user-123');
-      const stats = raw as import('../../../../domain/types').GameStats;
-
-      // 3 completed games, 2 winners → 67% (rounded)
-      expect(stats.winRate).toBeCloseTo(66.67, 0);
-    });
-
     it('calcula tiempo promedio total correctamente', async () => {
       setQueryResult(allGames);
 
@@ -351,6 +341,20 @@ describe('gamePersistence', () => {
       expect(stats.avgTimeByDifficulty.hard).toBeCloseTo(30, 0);
     });
 
+    it('desglosa completadas por dificultad', async () => {
+      setQueryResult(allGames);
+
+      const raw = await getGameStats('user-123');
+      const stats = raw as import('../../../../domain/types').GameStats;
+
+      // easy: g1 (completed) + g4 (completed) = 2
+      // medium: g2 (completed) = 1
+      // hard: g3 (in_progress) = 0
+      expect(stats.completedByDifficulty.easy).toBe(2);
+      expect(stats.completedByDifficulty.medium).toBe(1);
+      expect(stats.completedByDifficulty.hard).toBe(0);
+    });
+
     it('retorna ceros cuando no hay juegos', async () => {
       setQueryResult([]);
 
@@ -359,7 +363,9 @@ describe('gamePersistence', () => {
 
       expect(stats.totalGames).toBe(0);
       expect(stats.completedGames).toBe(0);
-      expect(stats.winRate).toBe(0);
+      expect(stats.completedByDifficulty.easy).toBe(0);
+      expect(stats.completedByDifficulty.medium).toBe(0);
+      expect(stats.completedByDifficulty.hard).toBe(0);
       expect(stats.avgTimeOverall).toBe(0);
       expect(stats.avgTimeByDifficulty.easy).toBe(0);
       expect(stats.avgTimeByDifficulty.medium).toBe(0);

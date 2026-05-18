@@ -4,10 +4,10 @@ import { useGameStore } from '../../../features/game/store/gameStore';
 import type { Difficulty } from '../../../domain/types';
 import styles from './NewGameSection.module.css';
 
-const difficulties: { key: Difficulty; label: string; className: string }[] = [
-  { key: 'easy', label: 'Fácil', className: 'btn-primary' },
-  { key: 'medium', label: 'Media', className: 'btn-secondary' },
-  { key: 'hard', label: 'Difícil', className: 'btn-secondary' },
+const difficulties: { key: Difficulty; label: string }[] = [
+  { key: 'easy', label: 'Fácil' },
+  { key: 'medium', label: 'Media' },
+  { key: 'hard', label: 'Difícil' },
 ];
 
 export const NewGameSection: FC = () => {
@@ -22,11 +22,11 @@ export const NewGameSection: FC = () => {
     <section>
       <h2 className={styles.title}>Nueva Partida</h2>
       <div className={styles.buttons}>
-        {difficulties.map(({ key, label, className }) => (
+        {difficulties.map(({ key, label }) => (
           <button
             key={key}
             onClick={() => handleStart(key)}
-            className={`${styles.button} ${className}`}
+            className={`${styles.button} ${styles[key]}`}
           >
             {label}
           </button>
