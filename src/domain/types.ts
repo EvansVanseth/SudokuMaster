@@ -43,3 +43,30 @@ export interface Move {
   col: number
   value: number | null
 }
+
+// ─── Resumen de partida ───────────────────────────────────────────────────────
+
+/**
+ * Resumen de una partida completada para mostrar en listados (historial).
+ * NO incluye el tablero completo — solo metadatos.
+ */
+export interface GameSummary {
+  id: string
+  difficulty: Difficulty
+  timeSpent: number
+  isWinner: boolean
+  completedAt: string
+}
+
+// ─── Estadísticas del jugador ─────────────────────────────────────────────────
+
+/**
+ * Estadísticas agregadas de un usuario, calculadas del lado cliente.
+ */
+export interface GameStats {
+  totalGames: number
+  completedGames: number
+  winRate: number
+  avgTimeOverall: number
+  avgTimeByDifficulty: Record<Difficulty, number>
+}
