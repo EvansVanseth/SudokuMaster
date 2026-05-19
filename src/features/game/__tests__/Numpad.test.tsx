@@ -4,12 +4,12 @@ import { Numpad } from '../components/Numpad';
 import { useGameStore } from '../store/gameStore';
 import type { Cell } from '../../../domain/types';
 
-const createBoard = (cells: { row: number; col: number; value: number | null }[]): Cell[][] => {
+const createBoard = (cells: { row: number; col: number; value: number | null; isClue?: boolean }[]): Cell[][] => {
   const board: Cell[][] = Array.from({ length: 9 }, () =>
     Array.from({ length: 9 }, () => ({ value: null, isClue: false, isError: false }))
   );
   for (const cell of cells) {
-    board[cell.row][cell.col] = { value: cell.value, isClue: false, isError: false };
+    board[cell.row][cell.col] = { value: cell.value, isClue: cell.isClue ?? false, isError: false };
   }
   return board;
 };
@@ -114,6 +114,44 @@ describe('Numpad component', () => {
 
     const button1After = screen.getByRole('button', { name: '1' });
     expect(button1After).not.toBeDisabled();
+  });
+
+  it('disables all buttons when a clue cell is selected', () => {
+    const board = createBoard([
+      { row: 0, col: 0, value: 1, isClue: true },
+      { row: 0, col: 1, value: 2, isClue: false },
+    ]);
+    useGameStore.setState({ board, selectedCell: { row: 0, col: 0 } });
+
+    render(<Numpad />);
+
+    // All number buttons should be disabled
+    for (let n = 1; n <= 9; n++) {
+      const button = screen.getByRole('button', { name: String(n) });
+      expect(button).toBeDisabled();
+    }
+
+    const borrarButton = screen.getByRole('button', { name: 'Borrar' });
+    expect(borrarButton).toBeDisabled();
+  });
+
+  it('enables buttons when selected cell is not a clue', () => {
+    const board = createBoard([
+      { row: 0, col: 0, value: 1, isClue: true },
+      { row: 0, col: 1, value: 2, isClue: false },
+    ]);
+    useGameStore.setState({ board, selectedCell: { row: 0, col: 1 } });
+
+    render(<Numpad />);
+
+    // Number 2's cell is selected but not a clue — buttons should be enabled
+    for (let n = 1; n <= 9; n++) {
+      const button = screen.getByRole('button', { name: String(n) });
+      expect(button).not.toBeDisabled();
+    }
+
+    const borrarButton = screen.getByRole('button', { name: 'Borrar' });
+    expect(borrarButton).not.toBeDisabled();
   });
 
   it('disables all buttons when game is solved', () => {

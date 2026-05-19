@@ -5,11 +5,15 @@ import styles from './Numpad.module.css';
 
 export const Numpad: React.FC = () => {
   const board = useGameStore((state) => state.board);
+  const selectedCell = useGameStore((state) => state.selectedCell);
   const enterNumber = useGameStore((state) => state.enterNumber);
   const deleteNumber = useGameStore((state) => state.deleteNumber);
   const status = useGameStore((state) => state.status);
 
   const exhaustedNumbers = useMemo(() => getExhaustedNumbers(board), [board]);
+
+  const isClueSelected =
+    selectedCell !== null && board[selectedCell.row][selectedCell.col].isClue;
 
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -21,7 +25,7 @@ export const Numpad: React.FC = () => {
             key={num}
             onClick={() => enterNumber(num)}
             className={styles.button}
-            disabled={status === 'solved' || exhaustedNumbers.has(num)}
+            disabled={status === 'solved' || isClueSelected || exhaustedNumbers.has(num)}
           >
             {num}
           </button>
@@ -29,7 +33,7 @@ export const Numpad: React.FC = () => {
         <button
           onClick={deleteNumber}
           className={`${styles.button} ${styles.deleteButton}`}
-          disabled={status === 'solved'}
+          disabled={status === 'solved' || isClueSelected}
         >
           Borrar
         </button>

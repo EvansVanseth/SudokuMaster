@@ -100,18 +100,17 @@ export const useGameStore = create<GameState>()(
       },
       selectCell: (row, col) => {
         set((state) => {
-          const nextSelection = state.board[row][col].isClue ? null : { row, col };
           const nextState: PersistedGameState = {
             board: state.board,
             initialBoard: state.initialBoard,
-            selectedCell: nextSelection,
+            selectedCell: { row, col },
             status: state.status,
             timer: state.timer,
             difficulty: state.difficulty,
             savedGameId: state.savedGameId,
           };
           saveSessionState(nextState);
-          return { selectedCell: nextSelection };
+          return { selectedCell: { row, col } };
         });
       },
       moveSelection: (direction) => {
@@ -124,35 +123,31 @@ export const useGameStore = create<GameState>()(
           }[direction];
 
           const current = state.selectedCell ?? { row: 0, col: 0 };
-          let nextRow = current.row + step.row;
-          let nextCol = current.col + step.col;
+          const nextRow = current.row + step.row;
+          const nextCol = current.col + step.col;
 
-          const isValid = (row: number, col: number) => row >= 0 && row < 9 && col >= 0 && col < 9;
-
-          while (isValid(nextRow, nextCol)) {
-            if (!state.board[nextRow][nextCol].isClue) {
-              const nextState: PersistedGameState = {
-                board: state.board,
-                initialBoard: state.initialBoard,
-                selectedCell: { row: nextRow, col: nextCol },
-                status: state.status,
-                timer: state.timer,
-                difficulty: state.difficulty,
-                savedGameId: state.savedGameId,
-              };
-              saveSessionState(nextState);
-              return { selectedCell: { row: nextRow, col: nextCol } };
-            }
-            nextRow += step.row;
-            nextCol += step.col;
+          // Clamp within board boundaries
+          if (nextRow < 0 || nextRow > 8 || nextCol < 0 || nextCol > 8) {
+            return { selectedCell: state.selectedCell };
           }
 
-          return { selectedCell: state.selectedCell };
+          const nextState: PersistedGameState = {
+            board: state.board,
+            initialBoard: state.initialBoard,
+            selectedCell: { row: nextRow, col: nextCol },
+            status: state.status,
+            timer: state.timer,
+            difficulty: state.difficulty,
+            savedGameId: state.savedGameId,
+          };
+          saveSessionState(nextState);
+          return { selectedCell: { row: nextRow, col: nextCol } };
         });
       },
       enterNumber: (value) => {
         set((state) => {
           if (!state.selectedCell) return state;
+          if (state.board[state.selectedCell.row][state.selectedCell.col].isClue) return state;
 
           const { row, col } = state.selectedCell;
           const newBoard = JSON.parse(JSON.stringify(state.board));
@@ -176,6 +171,7 @@ export const useGameStore = create<GameState>()(
       deleteNumber: () => {
         set((state) => {
           if (!state.selectedCell) return state;
+          if (state.board[state.selectedCell.row][state.selectedCell.col].isClue) return state;
 
           const { row, col } = state.selectedCell;
           const newBoard = JSON.parse(JSON.stringify(state.board));

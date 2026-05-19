@@ -9,6 +9,7 @@ vi.mock('../hooks/useAuth', () => ({
 }));
 
 import { useAuth } from '../hooks/useAuth';
+import type { User, Session } from '@supabase/supabase-js';
 
 const renderProtected = (initialRoute = '/protected') => {
   return render(
@@ -65,9 +66,9 @@ describe('ProtectedRoute', () => {
 
   it('renderiza el contenido protegido cuando el usuario está autenticado', () => {
     vi.mocked(useAuth).mockReturnValue({
-      user: { id: 'user-123' } as any,
+      user: { id: 'user-123' } as unknown as User,
       isLoading: false,
-      session: { access_token: 'token' } as any,
+      session: { access_token: 'token' } as unknown as Session,
       signOut: vi.fn(),
       signInWithGoogle: vi.fn(),
       signInWithEmail: vi.fn(),

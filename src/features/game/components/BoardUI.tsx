@@ -19,6 +19,11 @@ export const BoardUI: React.FC = () => {
     return <div>Generando tablero...</div>;
   }
 
+  // Compute once: the value of the currently selected cell (if non-empty)
+  const selectedValue = selectedCell
+    ? board[selectedCell.row]?.[selectedCell.col]?.value ?? null
+    : null;
+
   // Helper function to build class names dynamically
   const getCellClassName = (cell: Cell, rowIndex: number, colIndex: number) => {
     const classNames = [styles.cell];
@@ -39,6 +44,10 @@ export const BoardUI: React.FC = () => {
     else if (isRelated) classNames.push(styles.isRelated);
 
     if (cell.isError) classNames.push(styles.isError);
+
+    const isSameValue = !isSelected && selectedValue !== null && cell.value === selectedValue;
+    if (isSameValue) classNames.push(styles.isSameValue);
+
     if (status === 'solved') classNames.push(styles.solvedCell);
 
     // Box borders
