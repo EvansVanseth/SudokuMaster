@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import type { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../features/auth/hooks/useAuth';
@@ -18,38 +18,38 @@ export const HistoryPage: FC = () => {
   const [difficulty, setDifficulty] = useState<Difficulty | 'all'>('all');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
-  const fetchGames = useCallback(async () => {
+  useEffect(() => {
     if (!user?.id) return;
 
-    setIsLoading(true);
-    setError(null);
+    const fetchGames = async () => {
+      setIsLoading(true);
+      setError(null);
 
-    try {
-      const options: { difficulty?: Difficulty; sortOrder?: 'asc' | 'desc' } = {
-        sortOrder,
-      };
+      try {
+        const options: { difficulty?: Difficulty; sortOrder?: 'asc' | 'desc' } = {
+          sortOrder,
+        };
 
-      if (difficulty !== 'all') {
-        options.difficulty = difficulty;
+        if (difficulty !== 'all') {
+          options.difficulty = difficulty;
+        }
+
+        const result = await loadCompletedGamesForUser(user.id, options);
+
+        if ('error' in result) {
+          setError(result.error.message);
+        } else {
+          setGames(result);
+        }
+      } catch (loadError) {
+        setError(loadError instanceof Error ? loadError.message : String(loadError));
+      } finally {
+        setIsLoading(false);
       }
+    };
 
-      const result = await loadCompletedGamesForUser(user.id, options);
-
-      if ('error' in result) {
-        setError(result.error.message);
-      } else {
-        setGames(result);
-      }
-    } catch (loadError) {
-      setError(loadError instanceof Error ? loadError.message : String(loadError));
-    } finally {
-      setIsLoading(false);
-    }
-  }, [user?.id, difficulty, sortOrder]);
-
-  useEffect(() => {
     fetchGames();
-  }, [fetchGames]);
+  }, [user?.id, difficulty, sortOrder]);
 
   const handleDifficultyChange = (newDifficulty: Difficulty | 'all') => {
     setDifficulty(newDifficulty);

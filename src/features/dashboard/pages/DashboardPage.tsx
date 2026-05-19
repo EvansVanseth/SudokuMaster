@@ -105,6 +105,12 @@ export const DashboardPage: FC = () => {
 
     setPendingGames((prev) => prev.filter((g) => g.id !== gameToDelete));
     setGameToDelete(null);
+
+    // Refresh stats after deleting a game
+    const statsResult = await getGameStats(user!.id);
+    if (!('error' in statsResult)) {
+      setStats(statsResult);
+    }
   };
 
   const cancelDelete = () => {

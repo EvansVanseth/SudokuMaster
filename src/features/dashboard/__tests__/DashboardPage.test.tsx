@@ -4,7 +4,9 @@ import { MemoryRouter } from 'react-router-dom';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { DashboardPage } from '../pages/DashboardPage';
 import * as gamePersistence from '../../../features/game/services/gamePersistence';
-import type { GameStats, GameSummary } from '../../../domain/types';
+import type { GameStats } from '../../../domain/types';
+import type { User, Session } from '@supabase/supabase-js';
+import type { RemoteGameSummaryRecord } from '../../../features/game/services/gamePersistence';
 
 // Mock useAuth
 vi.mock('../../../features/auth/hooks/useAuth', () => ({
@@ -35,9 +37,9 @@ const mockStats: GameStats = {
   avgTimeByDifficulty: { easy: 60, medium: 180, hard: 300 },
 };
 
-const mockPendingGames: GameSummary[] = [
-  { id: 'game-1', difficulty: 'easy', timeSpent: 120, isWinner: false, completedAt: '2026-05-18T10:00:00Z' },
-  { id: 'game-2', difficulty: 'hard', timeSpent: 300, isWinner: false, completedAt: '2026-05-17T09:00:00Z' },
+const mockPendingGames: RemoteGameSummaryRecord[] = [
+  { id: 'game-1', user_id: 'user-123', difficulty: 'easy', status: 'in_progress', time_spent: 120, is_winner: false, created_at: '2026-05-18T10:00:00Z', updated_at: '2026-05-18T10:00:00Z' },
+  { id: 'game-2', user_id: 'user-123', difficulty: 'hard', status: 'in_progress', time_spent: 300, is_winner: false, created_at: '2026-05-17T09:00:00Z', updated_at: '2026-05-17T09:00:00Z' },
 ];
 
 const renderDashboard = () =>
@@ -51,9 +53,9 @@ describe('DashboardPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(useAuth).mockReturnValue({
-      user: mockUser as any,
+      user: mockUser as unknown as User,
       isLoading: false,
-      session: { access_token: 'token' } as any,
+      session: { access_token: 'token' } as unknown as Session,
       signOut: vi.fn(),
       signInWithGoogle: vi.fn(),
       signInWithEmail: vi.fn(),
@@ -108,8 +110,8 @@ describe('DashboardPage', () => {
   });
 
   it('muestra la lista de partidas pendientes', async () => {
-    vi.mocked(gamePersistence.getGameStats).mockResolvedValue(mockStats as any);
-    vi.mocked(gamePersistence.loadPendingGamesForUser).mockResolvedValue(mockPendingGames as any);
+    vi.mocked(gamePersistence.getGameStats).mockResolvedValue(mockStats);
+    vi.mocked(gamePersistence.loadPendingGamesForUser).mockResolvedValue(mockPendingGames);
 
     renderDashboard();
 
@@ -122,8 +124,8 @@ describe('DashboardPage', () => {
 
   it('abre el modal de confirmación al hacer click en Eliminar', async () => {
     const user = userEvent.setup();
-    vi.mocked(gamePersistence.getGameStats).mockResolvedValue(mockStats as any);
-    vi.mocked(gamePersistence.loadPendingGamesForUser).mockResolvedValue(mockPendingGames as any);
+    vi.mocked(gamePersistence.getGameStats).mockResolvedValue(mockStats);
+    vi.mocked(gamePersistence.loadPendingGamesForUser).mockResolvedValue(mockPendingGames);
     vi.mocked(gamePersistence.deleteSavedGame).mockResolvedValue({});
 
     renderDashboard();
@@ -137,10 +139,10 @@ describe('DashboardPage', () => {
     expect(screen.getByText(/no se puede deshacer/i)).toBeInTheDocument();
   });
 
-  it('llama a deleteSavedGame al confirmar eliminación', async () => {
+  it('llama a deleteSavedGame y refresca stats al confirmar eliminación', async () => {
     const user = userEvent.setup();
-    vi.mocked(gamePersistence.getGameStats).mockResolvedValue(mockStats as any);
-    vi.mocked(gamePersistence.loadPendingGamesForUser).mockResolvedValue(mockPendingGames as any);
+    vi.mocked(gamePersistence.getGameStats).mockResolvedValue(mockStats);
+    vi.mocked(gamePersistence.loadPendingGamesForUser).mockResolvedValue(mockPendingGames);
     vi.mocked(gamePersistence.deleteSavedGame).mockResolvedValue({});
 
     renderDashboard();
@@ -153,5 +155,7 @@ describe('DashboardPage', () => {
     await user.click(screen.getByText('Sí, eliminar'));
 
     expect(gamePersistence.deleteSavedGame).toHaveBeenCalledWith('game-1');
+    // Stats should be refreshed after delete
+    expect(gamePersistence.getGameStats).toHaveBeenCalledWith('user-123');
   });
 });

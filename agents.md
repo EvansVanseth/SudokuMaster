@@ -74,7 +74,7 @@ npm run lint        # Run ESLint
 | H-003.5: Landing Page & Auth Flow | ✅ Complete |
 | H-004: Game UI | ✅ Complete |
 | H-005: Persistence & Auto-save | ✅ Complete |
-| H-006: History & Dashboard | 🔲 Pending |
+| H-006: History & Dashboard | ✅ Complete |
 
 ---
 
@@ -86,7 +86,7 @@ npm run lint        # Run ESLint
 
 3. **Generation performance**: Goal is <5ms generation time with unique solution guarantee.
 
-4. **Current Hito**: The persistence and auto-save features are complete (H-005). Next work should focus on H-006 (History & Dashboard).
+4. **Current Hito**: All planned milestones (H-001 through H-006) are complete. Additional features managed via SDD workflow.
 
 5. **Validation approach**: The system uses a "permissive mode" - cells show errors visually but don't block input.
 

@@ -19,14 +19,15 @@ vi.mock('../../../features/game/services/gamePersistence', () => ({
 
 import { AppRouter } from '../AppRouter';
 import { useAuth } from '../../../features/auth/hooks/useAuth';
+import type { User, Session } from '@supabase/supabase-js';
 
 describe('AppRouter — /dashboard/history route', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(useAuth).mockReturnValue({
-      user: { id: 'user-1', email: 'test@test.com' } as any,
+      user: { id: 'user-1', email: 'test@test.com' } as unknown as User,
       isLoading: false,
-      session: { access_token: 'token' } as any,
+      session: { access_token: 'token' } as unknown as Session,
       signOut: vi.fn(),
       signInWithGoogle: vi.fn(),
       signInWithEmail: vi.fn(),

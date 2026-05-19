@@ -21,6 +21,7 @@ vi.mock('../../../game/services/gamePersistence', async () => {
 });
 
 import { useAuth } from '../../../auth/hooks/useAuth';
+import type { User, Session } from '@supabase/supabase-js';
 
 const mockUser = { id: 'user-123', email: 'test@test.com', user_metadata: { display_name: 'TestUser' } };
 
@@ -59,9 +60,9 @@ describe('HistoryPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(useAuth).mockReturnValue({
-      user: mockUser as any,
+      user: mockUser as unknown as User,
       isLoading: false,
-      session: { access_token: 'token' } as any,
+      session: { access_token: 'token' } as unknown as Session,
       signOut: vi.fn(),
       signInWithGoogle: vi.fn(),
       signInWithEmail: vi.fn(),
