@@ -7,7 +7,7 @@ import { CreditsSection } from '../../features/dashboard/components/CreditsSecti
 import { useAuth } from '../../features/auth/hooks/useAuth';
 import { generateSudoku } from '../../domain/sudokuEngine';
 import { restoreSessionGameState, type PersistedGameState } from '../../features/game/store/gameStore';
-import { DashboardIcon, RefreshIcon } from '../../shared/ui/icons';
+import { RefreshIcon } from '../../shared/ui/icons';
 import styles from './LandingPage.module.css';
 
 const TRIVIA_LIST = [
