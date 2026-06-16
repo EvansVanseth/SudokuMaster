@@ -2,6 +2,9 @@ import React from 'react';
 import { BoardUI } from '../features/game/components/BoardUI';
 import { Controls } from '../features/game/components/Controls';
 import { Numpad } from '../features/game/components/Numpad';
+import { GameCompanion } from '../features/game/components/GameCompanion';
+import { AuthStatusBanner } from '../features/auth/components/AuthStatusBanner';
+import { FeedbackModal } from '../features/game/components/FeedbackModal';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGameStore, restoreSessionGameState } from '../features/game/store/gameStore';
 import { saveGameStateToSupabase, completeSavedGameIfNeeded } from '../features/game/services/gamePersistence';
@@ -14,6 +17,7 @@ export const GamePage: React.FC = () => {
   const { difficulty } = useParams<{ difficulty: Difficulty }>();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = React.useState(false);
   const isConfirmingExit = useGameStore((state) => state.isConfirmingExit);
   const toggleConfirmExit = useGameStore((state) => state.toggleConfirmExit);
   const status = useGameStore((state) => state.status);
@@ -166,7 +170,18 @@ export const GamePage: React.FC = () => {
           </div>
           <div className={styles.controlsContainer}>
             <Numpad />
+            <GameCompanion />
             <Controls />
+            <AuthStatusBanner />
+            {user && (
+              <button 
+                onClick={() => setIsFeedbackModalOpen(true)} 
+                className="btn-secondary" 
+                style={{ marginTop: '1rem', width: '100%' }}
+              >
+                ¿Sugerencias?
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -175,7 +190,7 @@ export const GamePage: React.FC = () => {
         <p>
           {user
             ? 'Tu progreso actual se guardará.'
-            : 'El progreso de la partida se PERDERA si sales.'}
+            : 'Si inicias sesión gratis, guardaremos tu partida automáticamente. Si sales ahora, el progreso se PERDERÁ.'}
         </p>
         <div className={styles.modalActions}>
           <button onClick={() => toggleConfirmExit()} className="btn-secondary">
@@ -186,6 +201,7 @@ export const GamePage: React.FC = () => {
           </button>
         </div>
       </Modal>
+      {isFeedbackModalOpen && <FeedbackModal onClose={() => setIsFeedbackModalOpen(false)} />}
     </>
   );
 };
