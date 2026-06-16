@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { Difficulty, GameStats } from '../../../domain/types';
+import { HistoryIcon } from '../../../shared/ui/icons';
 import styles from './StatsCards.module.css';
 
 const difficultyConfig: {
@@ -26,6 +27,7 @@ export const StatsCards: FC<Props> = ({ stats }) => {
     <section className={styles.container}>
       <div className={styles.grid}>
         {difficultyConfig.map(({ key, label, colorVar }) => {
+          // ... (keep rendering logic inside map)
           const borderStyle = { borderColor: `var(${colorVar})` };
 
           if (key === 'global') {
@@ -69,13 +71,16 @@ export const StatsCards: FC<Props> = ({ stats }) => {
         })}
       </div>
 
-      <button
-        onClick={() => navigate('/dashboard/history')}
-        className="btn-secondary"
-        style={{ marginTop: '1rem' }}
-      >
-        Ver Historial Completo
-      </button>
+      <div className={styles.buttonContainer}>
+        <button
+          onClick={() => navigate('/dashboard/history')}
+          className="btn-secondary"
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', width: '100%' }}
+        >
+          <HistoryIcon width={16} height={16} />
+          Ver Historial Completo
+        </button>
+      </div>
     </section>
   );
 };

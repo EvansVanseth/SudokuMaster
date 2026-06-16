@@ -2,6 +2,7 @@ import type { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '../../../features/game/store/gameStore';
 import type { Difficulty } from '../../../domain/types';
+import { PlayIcon } from '../../../shared/ui/icons';
 import styles from './NewGameSection.module.css';
 
 const difficulties: { key: Difficulty; label: string }[] = [
@@ -27,7 +28,9 @@ export const NewGameSection: FC = () => {
             key={key}
             onClick={() => handleStart(key)}
             className={`${styles.button} ${styles[key]}`}
+            style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}
           >
+            <PlayIcon width={16} height={16} />
             {label}
           </button>
         ))}

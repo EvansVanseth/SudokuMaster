@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
+import { DashboardIcon } from '../../../shared/ui/icons';
 
 export const UserBanner: FC = () => {
   const { user, isLoading } = useAuth();
@@ -21,8 +22,9 @@ export const UserBanner: FC = () => {
       {user ? (
         <div className="user-info" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
           <span style={{ fontSize: '1.1rem' }}>¡Hola, <strong>{getDisplayName()}</strong>!</span>
-          <button onClick={() => navigate('/dashboard')} className="btn-primary">
-            Ir a mi Panel
+          <button onClick={() => navigate('/dashboard')} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <DashboardIcon width={16} height={16} />
+            DashBoard
           </button>
         </div>
       ) : (
