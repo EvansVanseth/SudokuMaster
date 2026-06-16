@@ -1,0 +1,17 @@
+.banner {
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  text-align: center;
+  border-top: 1px solid #30363d;
+  margin-top: 1rem;
+}
+
+.loggedIn {
+  color: #4caf50;
+  margin: 0;
+}
+
+.loggedOut {
+  color: #ff9800;
+  margin: 0;
+}

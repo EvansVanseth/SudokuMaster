@@ -1,0 +1,23 @@
+.companion {
+  background: #1e2634;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #30363d;
+  color: #fff;
+  margin-top: 1rem;
+  text-align: center;
+  overflow: hidden;
+}
+
+.triviaText {
+  font-size: 0.85rem;
+  line-height: 1.3;
+  margin: 0;
+  color: #ddd;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}

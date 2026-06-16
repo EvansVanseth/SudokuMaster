@@ -1,0 +1,22 @@
+.credits {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+.link,
+.portfolioLink {
+  color: #87ceeb;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.link:hover,
+.portfolioLink:hover {
+  text-decoration: underline;
+}

@@ -6,6 +6,7 @@ import { loadCompletedGamesForUser } from '../../../features/game/services/gameP
 import type { Difficulty, GameSummary } from '../../../domain/types';
 import { FilterBar } from '../components/FilterBar';
 import { HistoryList } from '../components/HistoryList';
+import { DashboardIcon } from '../../../shared/ui/icons';
 import styles from './HistoryPage.module.css';
 
 export const HistoryPage: FC = () => {
@@ -79,8 +80,9 @@ export const HistoryPage: FC = () => {
         <button
           onClick={() => navigate('/dashboard')}
           className="btn-secondary"
-          style={{ marginTop: '2rem' }}
+          style={{ marginTop: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', width: '100%' }}
         >
+          <DashboardIcon width={16} height={16} />
           Volver al Dashboard
         </button>
       </div>

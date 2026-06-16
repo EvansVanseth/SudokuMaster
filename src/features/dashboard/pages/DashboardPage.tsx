@@ -14,6 +14,7 @@ import type { Difficulty, GameStats, GameSummary } from '../../../domain/types';
 import { NewGameSection } from '../components/NewGameSection';
 import { StatsCards } from '../components/StatsCards';
 import { PendingGamesList } from '../components/PendingGamesList';
+import { HomeIcon, LogoutIcon } from '../../../shared/ui/icons';
 import styles from './DashboardPage.module.css';
 
 export const DashboardPage: FC = () => {
@@ -144,10 +145,12 @@ export const DashboardPage: FC = () => {
         </div>
 
         <div className={styles.footer}>
-          <button onClick={() => navigate('/')} className="btn-secondary">
+          <button onClick={() => navigate('/')} className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <HomeIcon width={16} height={16} />
             Volver al Inicio
           </button>
-          <button onClick={signOut} className="btn-secondary">
+          <button onClick={signOut} className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <LogoutIcon width={16} height={16} />
             Cerrar Sesión
           </button>
         </div>

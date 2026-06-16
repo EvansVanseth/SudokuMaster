@@ -2,6 +2,7 @@ import type { FC } from 'react';
 import type { GameSummary } from '../../../domain/types';
 import { DifficultyBadge } from '../../../shared/ui/DifficultyBadge';
 import { Modal } from '../../../shared/ui/Modal';
+import { PlayIcon, TrashIcon } from '../../../shared/ui/icons';
 import styles from './PendingGamesList.module.css';
 
 interface Props {
@@ -69,13 +70,17 @@ export const PendingGamesList: FC<Props> = ({
                       <button
                         onClick={() => onResume(game.id)}
                         className="btn-primary"
+                        style={{ display: 'flex', alignItems: 'center', gap: '4px' }}
                       >
+                        <PlayIcon width={16} height={16} />
                         Reanudar
                       </button>
                       <button
                         onClick={() => onDelete(game.id)}
                         className="btn-danger"
+                        style={{ display: 'flex', alignItems: 'center', gap: '4px' }}
                       >
+                        <TrashIcon width={16} height={16} />
                         Eliminar
                       </button>
                     </div>

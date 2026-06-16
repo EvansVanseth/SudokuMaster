@@ -250,7 +250,7 @@ p {
     font-size: 0.9rem;
   }
 
-  table,
+  /* table,
   tbody {
     display: block;
     width: 100%;
@@ -285,7 +285,7 @@ p {
     margin-right: 1rem;
   }
 
-  /* Specific handling for the actions cell */
+
   td:last-child {
     margin-top: 1rem;
     display: block;
@@ -295,7 +295,7 @@ p {
   td:last-child div {
     flex-direction: column;
     width: 100%;
-  }
+  } */
 }
 
 @media (max-width: 420px) {
