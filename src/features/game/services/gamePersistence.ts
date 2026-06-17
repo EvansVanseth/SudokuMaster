@@ -109,7 +109,8 @@ export const getGameStats = async (
   const { data, error } = await supabase
     .from('games')
     .select(LIST_COLUMNS)
-    .eq('user_id', userId);
+    .eq('user_id', userId)
+    .eq('status', 'completed');
 
   if (error) return { error };
 

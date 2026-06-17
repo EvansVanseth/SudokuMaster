@@ -7,3 +7,4 @@ export * from './PlayIcon';
 export * from './TrashIcon';
 export * from './DashboardIcon';
 export * from './RefreshIcon';
+export * from './UserIcon';

@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
+import { Routes, Route, Navigate, Link } from 'react-router-dom';
 import { useAuth } from '../../features/auth/hooks/useAuth';
 import { ProtectedRoute } from '../../features/auth/components/ProtectedRoute';
 import { LoginButton } from '../../features/auth/components/LoginButton';
@@ -10,6 +10,8 @@ import { GamePage } from '../../pages/GamePage';
 import { AuthCallback } from '../pages/AuthCallback';
 import { DashboardPage } from '../../features/dashboard/pages/DashboardPage';
 import { HistoryPage } from '../../features/history/pages/HistoryPage';
+import { LeaderboardPage } from '../../features/leaderboard/pages/LeaderboardPage';
+import AccountPage from '../pages/AccountPage';
 
 const LoginPage: FC = () => {
   const { user } = useAuth();
@@ -39,7 +41,6 @@ const LoginPage: FC = () => {
 
 export const AppRouter: FC = () => {
   return (
-    <BrowserRouter>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
@@ -62,8 +63,16 @@ export const AppRouter: FC = () => {
           } 
         />
         <Route path="/auth/callback" element={<AuthCallback />} />
+        <Route path="/leaderboard" element={<LeaderboardPage />} />
+        <Route 
+          path="/account" 
+          element={
+            <ProtectedRoute>
+              <AccountPage />
+            </ProtectedRoute>
+          } 
+        />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-    </BrowserRouter>
   );
 };

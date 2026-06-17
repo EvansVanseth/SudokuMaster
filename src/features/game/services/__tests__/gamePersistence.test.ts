@@ -292,17 +292,15 @@ describe('gamePersistence', () => {
   });
 
   describe('getGameStats', () => {
-    const allGames = [
-      // 2 completed, 1 winner + 1 loser
+    const completedGamesOnly = [
       { id: 'g1', difficulty: 'easy', status: 'completed', time_spent: 60, is_winner: true },
       { id: 'g2', difficulty: 'medium', status: 'completed', time_spent: 120, is_winner: false },
-      { id: 'g3', difficulty: 'hard', status: 'in_progress', time_spent: 30, is_winner: false },
       { id: 'g4', difficulty: 'easy', status: 'completed', time_spent: 180, is_winner: true },
     ];
 
-    it('calcula estadísticas correctamente desde todos los juegos', async () => {
+    it('calcula estadísticas correctamente solo desde juegos completados', async () => {
       const mocks = getMocks();
-      setQueryResult(allGames);
+      setQueryResult(completedGamesOnly);
 
       const raw = await getGameStats('user-123');
       const stats = raw as import('../../../../domain/types').GameStats;
@@ -311,45 +309,46 @@ describe('gamePersistence', () => {
         'id, user_id, difficulty, status, time_spent, is_winner, created_at, updated_at'
       );
       expect(mocks.eqMock).toHaveBeenCalledWith('user_id', 'user-123');
-      expect(mocks.orderMock).not.toHaveBeenCalled(); // No sort needed for aggregation
+      expect(mocks.eqMock).toHaveBeenCalledWith('status', 'completed');
+      expect(mocks.orderMock).not.toHaveBeenCalled(); 
 
-      expect(stats.totalGames).toBe(4);
+      expect(stats.totalGames).toBe(3);
       expect(stats.completedGames).toBe(3);
     });
 
     it('calcula tiempo promedio total correctamente', async () => {
-      setQueryResult(allGames);
+      setQueryResult(completedGamesOnly);
 
       const raw = await getGameStats('user-123');
       const stats = raw as import('../../../../domain/types').GameStats;
 
-      // (60 + 120 + 30 + 180) / 4 = 97.5
-      expect(stats.avgTimeOverall).toBeCloseTo(97.5, 0);
+      // (60 + 120 + 180) / 3 = 120
+      expect(stats.avgTimeOverall).toBeCloseTo(120, 0);
     });
 
     it('desglosa tiempo promedio por dificultad', async () => {
-      setQueryResult(allGames);
+      setQueryResult(completedGamesOnly);
 
       const raw = await getGameStats('user-123');
       const stats = raw as import('../../../../domain/types').GameStats;
 
       // easy: (60 + 180) / 2 = 120
       // medium: 120 / 1 = 120
-      // hard: 30 / 1 = 30
+      // hard: 0
       expect(stats.avgTimeByDifficulty.easy).toBeCloseTo(120, 0);
       expect(stats.avgTimeByDifficulty.medium).toBeCloseTo(120, 0);
-      expect(stats.avgTimeByDifficulty.hard).toBeCloseTo(30, 0);
+      expect(stats.avgTimeByDifficulty.hard).toBeCloseTo(0, 0);
     });
 
     it('desglosa completadas por dificultad', async () => {
-      setQueryResult(allGames);
+      setQueryResult(completedGamesOnly);
 
       const raw = await getGameStats('user-123');
       const stats = raw as import('../../../../domain/types').GameStats;
 
-      // easy: g1 (completed) + g4 (completed) = 2
-      // medium: g2 (completed) = 1
-      // hard: g3 (in_progress) = 0
+      // easy: g1 + g4 = 2
+      // medium: g2 = 1
+      // hard: 0
       expect(stats.completedByDifficulty.easy).toBe(2);
       expect(stats.completedByDifficulty.medium).toBe(1);
       expect(stats.completedByDifficulty.hard).toBe(0);
