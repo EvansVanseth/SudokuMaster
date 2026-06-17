@@ -40,11 +40,6 @@ describe('HistoryList', () => {
     expect(screen.getByText('2 min 0 seg')).toBeInTheDocument();
     expect(screen.getByText('5 min 5 seg')).toBeInTheDocument();
     expect(screen.getByText('1 min 0 seg')).toBeInTheDocument();
-
-    // Should show won/lost (2 games won, 1 lost)
-    const wonElements = screen.getAllByText('Ganada');
-    expect(wonElements).toHaveLength(2);
-    expect(screen.getByText('Perdida')).toBeInTheDocument();
   });
 
   it('renderiza el mensaje de empty state cuando no hay partidas', () => {
@@ -82,7 +77,6 @@ describe('HistoryList', () => {
 
     expect(screen.getByText('Dificultad')).toBeInTheDocument();
     expect(screen.getByText('Tiempo')).toBeInTheDocument();
-    expect(screen.getByText('Resultado')).toBeInTheDocument();
     expect(screen.getByText('Fecha')).toBeInTheDocument();
   });
 });

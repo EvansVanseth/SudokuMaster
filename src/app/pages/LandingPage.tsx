@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { UserBanner } from '../../features/auth/components/UserBanner';
 import { SudokuPreviewCard } from '../../shared/ui/SudokuPreviewCard';
 import { CreditsSection } from '../../features/dashboard/components/CreditsSection';
+import { LeaderboardSection } from '../../features/leaderboard/components/LeaderboardSection';
 import { useAuth } from '../../features/auth/hooks/useAuth';
 import { generateSudoku } from '../../domain/sudokuEngine';
 import { restoreSessionGameState, type PersistedGameState } from '../../features/game/store/gameStore';
@@ -117,6 +118,8 @@ export const LandingPage: FC = () => {
             {trivia}
           </p>
         </section>
+
+        <LeaderboardSection />
 
         {!user && (
           <section className={styles.cta}>

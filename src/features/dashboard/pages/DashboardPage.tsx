@@ -14,11 +14,11 @@ import type { Difficulty, GameStats, GameSummary } from '../../../domain/types';
 import { NewGameSection } from '../components/NewGameSection';
 import { StatsCards } from '../components/StatsCards';
 import { PendingGamesList } from '../components/PendingGamesList';
-import { HomeIcon, LogoutIcon } from '../../../shared/ui/icons';
+import { HomeIcon, UserIcon } from '../../../shared/ui/icons';
 import styles from './DashboardPage.module.css';
 
 export const DashboardPage: FC = () => {
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const [stats, setStats] = useState<GameStats | null>(null);
@@ -149,9 +149,9 @@ export const DashboardPage: FC = () => {
             <HomeIcon width={16} height={16} />
             Volver al Inicio
           </button>
-          <button onClick={signOut} className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <LogoutIcon width={16} height={16} />
-            Cerrar Sesión
+          <button onClick={() => navigate('/account')} className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <UserIcon width={16} height={16} />
+            Mi Cuenta
           </button>
         </div>
       </div>

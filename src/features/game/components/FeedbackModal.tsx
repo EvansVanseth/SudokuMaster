@@ -4,8 +4,9 @@ import { supabase } from '../../../shared/api/supabaseClient';
 import { useAuth } from '../../auth/hooks/useAuth';
 import styles from './FeedbackModal.module.css';
 
-// Using a hardcoded version for now to avoid import issues with package.json in Vite
-const APP_VERSION = '1.0.0';
+declare const __APP_VERSION__: string;
+// Using global constant defined in vite.config.ts
+const APP_VERSION = __APP_VERSION__;
 
 interface FeedbackModalProps {
   onClose: () => void;

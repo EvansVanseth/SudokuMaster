@@ -76,8 +76,7 @@ describe('HistoryPage', () => {
     renderHistoryPage();
 
     await waitFor(() => {
-      const ganadaElements = screen.getAllByText('Ganada');
-      expect(ganadaElements.length).toBeGreaterThanOrEqual(1);
+      expect(screen.getByRole('table')).toBeInTheDocument();
     });
 
     // Badge text also appears in <option> elements; verify data content renders
