@@ -1,4 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import type { FC, ReactNode } from 'react';
 
@@ -32,14 +33,18 @@ describe('AppRouter — /dashboard/history route', () => {
       signInWithGoogle: vi.fn(),
       signInWithEmail: vi.fn(),
       signUpWithEmail: vi.fn(),
-    });
-  });
+      getDisplayName: vi.fn(),
+      profile: { full_name: 'Test User' },
+      refreshProfile: vi.fn(),
+     });
+   });
 
   it('navega a /dashboard/history y renderiza HistoryPage', async () => {
-    // Use pushState to set the URL before rendering
-    window.history.pushState({}, '', '/dashboard/history');
-
-    render(<AppRouter />);
+    render(
+      <MemoryRouter initialEntries={['/dashboard/history']}>
+        <AppRouter />
+      </MemoryRouter>
+    );
 
     await waitFor(() => {
       expect(screen.getByText('Historial')).toBeInTheDocument();

@@ -51,7 +51,7 @@ export const FeedbackModal: FC<FeedbackModalProps> = ({ onClose }) => {
   if (submitted) {
     return (
       <div className={styles.overlay}>
-        <div className={styles.modal}>
+        <div className={`${styles.modal} glass-card`}>
           <h3>¡Muchas gracias!</h3>
           <p>Tu sugerencia ha sido enviada correctamente.</p>
           <div className={styles.actions}>
@@ -64,7 +64,7 @@ export const FeedbackModal: FC<FeedbackModalProps> = ({ onClose }) => {
 
   return (
     <div className={styles.overlay}>
-      <div className={styles.modal}>
+      <div className={`${styles.modal} glass-card`}>
         <h3>¿Alguna sugerencia de mejora?</h3>
         <form onSubmit={handleSubmit}>
           <textarea
@@ -73,10 +73,11 @@ export const FeedbackModal: FC<FeedbackModalProps> = ({ onClose }) => {
             placeholder="Escribe aquí tu idea..."
             required
             rows={4}
+            className={styles.textarea}
           />
           <div className={styles.actions}>
-            <button type="button" onClick={onClose} disabled={loading}>Cancelar</button>
-            <button type="submit" disabled={loading || !message.trim()}>
+            <button type="button" onClick={onClose} disabled={loading} className="btn-secondary">Cancelar</button>
+            <button type="submit" disabled={loading || !message.trim()} className="btn-primary">
               {loading ? 'Enviando...' : 'Enviar Sugerencia'}
             </button>
           </div>

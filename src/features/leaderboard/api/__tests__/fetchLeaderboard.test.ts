@@ -42,7 +42,7 @@ describe('fetchLeaderboard', () => {
 
     it('fetches leaderboard data from top_players_view', async () => {
         const mocks = (globalThis as unknown as Record<string, unknown>).testSupabaseMocks as TestSupabaseMocks;
-        const mockData = [{ username: 'Player1', score: 100 }];
+         const mockData = [{ display_name: 'Player1', total_score: 100 }];
         setQueryResult(mockData);
 
         const result = await fetchLeaderboard();

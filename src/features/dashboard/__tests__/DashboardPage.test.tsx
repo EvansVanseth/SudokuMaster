@@ -58,10 +58,13 @@ describe('DashboardPage', () => {
       session: { access_token: 'token' } as unknown as Session,
       signOut: vi.fn(),
       signInWithGoogle: vi.fn(),
-      signInWithEmail: vi.fn(),
-      signUpWithEmail: vi.fn(),
-    });
-  });
+       signInWithEmail: vi.fn(),
+       signUpWithEmail: vi.fn(),
+       getDisplayName: vi.fn().mockReturnValue('Test User'),
+        profile: { full_name: 'Test User' },
+        refreshProfile: vi.fn(),
+     });
+   });
 
   it('renderiza stats cards agrupados con valores correctos', async () => {
     vi.mocked(gamePersistence.getGameStats).mockResolvedValue(mockStats);
@@ -94,7 +97,7 @@ describe('DashboardPage', () => {
     renderDashboard();
 
     await waitFor(() => {
-      expect(screen.getByText(/TestUser/)).toBeInTheDocument();
+      expect(screen.getByText(/Test User/)).toBeInTheDocument();
     });
   });
 

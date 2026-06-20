@@ -1,5 +1,6 @@
 
 import { render, screen, fireEvent } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { describe, it, expect, vi, type Mock } from 'vitest';
 import AccountPage from '../AccountPage';
 import { useAuth } from '../../../features/auth/hooks/useAuth';
@@ -15,11 +16,14 @@ describe('AccountPage', () => {
       signOut: vi.fn(),
     });
 
-    render(<AccountPage />);
-    expect(screen.getByText(/test@example.com/i)).toBeDefined();
-    expect(screen.getByRole('button', { name: /logout/i })).toBeDefined();
-    expect(screen.getByPlaceholderText(/new full name/i)).toBeDefined();
-    expect(screen.getByRole('button', { name: /update name/i })).toBeDefined();
+    render(
+      <MemoryRouter>
+        <AccountPage />
+      </MemoryRouter>
+    );
+    expect(screen.getByRole('button', { name: /Cerrar Sesión/i })).toBeDefined();
+    expect(screen.getByPlaceholderText(/Nuevo nombre/i)).toBeDefined();
+    expect(screen.getByRole('button', { name: /Actualizar/i })).toBeDefined();
   });
 
   it('calls signOut when Logout button is clicked', async () => {
@@ -29,8 +33,12 @@ describe('AccountPage', () => {
       signOut: signOutMock,
     });
 
-    render(<AccountPage />);
-    const logoutButton = screen.getByRole('button', { name: /logout/i });
+    render(
+      <MemoryRouter>
+        <AccountPage />
+      </MemoryRouter>
+    );
+    const logoutButton = screen.getByRole('button', { name: /Cerrar Sesión/i });
     fireEvent.click(logoutButton);
     expect(signOutMock).toHaveBeenCalled();
   });

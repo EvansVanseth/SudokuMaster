@@ -21,7 +21,7 @@ const MOCK_DATA: Player[] = [
     { user_id: '10', display_name: 'Sofia Newbie', total_score: 5 },
 ];
 
-export function LeaderboardSection({ useMock = true }: { useMock?: boolean }) {
+export function LeaderboardSection({ useMock = false }: { useMock?: boolean }) {
     const [players, setPlayers] = useState<Player[] | null>(useMock ? MOCK_DATA : null);
     const [loading, setLoading] = useState(!useMock);
 

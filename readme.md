@@ -58,7 +58,7 @@ El proyecto ha completado los hitos originales (H-001 a H-006) y la fase de refi
 - **Integración de Versión**: Footer informativo con versión dinámica.
 - **Estadísticas precisas**: Cálculo basado únicamente en partidas completadas.
 - **Leaderboard**: Sistema de ranking competitivo con diseño visual.
-- **Gestión de Cuenta**: Panel de usuario para edición de perfil y sesión.
+- **Gestión de Cuenta**: Panel completo de usuario, refactorización de lógica de perfil con sincronización en tiempo real, seguridad avanzada (OWASP, validación contraseña) y flujo de borrado seguro.
 
 
 ---
