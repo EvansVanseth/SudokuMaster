@@ -18,7 +18,7 @@ import { HomeIcon, UserIcon } from '../../../shared/ui/icons';
 import styles from './DashboardPage.module.css';
 
 export const DashboardPage: FC = () => {
-  const { user } = useAuth();
+  const { user, getDisplayName } = useAuth();
   const navigate = useNavigate();
 
   const [stats, setStats] = useState<GameStats | null>(null);
@@ -26,11 +26,6 @@ export const DashboardPage: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [gameToDelete, setGameToDelete] = useState<string | null>(null);
-
-  const getDisplayName = () => {
-    if (!user) return '';
-    return user.user_metadata?.display_name || user.user_metadata?.full_name || user.email;
-  };
 
   useEffect(() => {
     if (!user?.id) return;

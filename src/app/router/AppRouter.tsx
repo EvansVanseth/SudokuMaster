@@ -6,12 +6,15 @@ import { LoginButton } from '../../features/auth/components/LoginButton';
 import { AuthForm } from '../../features/auth/components/AuthForm';
 import { LandingPage } from '../pages/LandingPage';
 import { RegisterPage } from '../pages/RegisterPage';
+import { ForgotPasswordPage } from '../pages/ForgotPasswordPage';
+import { ResetPasswordPage } from '../pages/ResetPasswordPage';
 import { GamePage } from '../../pages/GamePage';
 import { AuthCallback } from '../pages/AuthCallback';
 import { DashboardPage } from '../../features/dashboard/pages/DashboardPage';
 import { HistoryPage } from '../../features/history/pages/HistoryPage';
 import { LeaderboardPage } from '../../features/leaderboard/pages/LeaderboardPage';
 import AccountPage from '../pages/AccountPage';
+import { ScrollToTop } from '../../shared/ui/ScrollToTop';
 
 const LoginPage: FC = () => {
   const { user } = useAuth();
@@ -42,37 +45,46 @@ const LoginPage: FC = () => {
 export const AppRouter: FC = () => {
   return (
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/game/:difficulty" element={<GamePage />} />
-        <Route 
-          path="/dashboard" 
-          element={
-            <ProtectedRoute>
-              <DashboardPage />
-            </ProtectedRoute>
-          } 
-        />
-        <Route 
-          path="/dashboard/history" 
-          element={
-            <ProtectedRoute>
-              <HistoryPage />
-            </ProtectedRoute>
-          } 
-        />
-        <Route path="/auth/callback" element={<AuthCallback />} />
-        <Route path="/leaderboard" element={<LeaderboardPage />} />
-        <Route 
-          path="/account" 
-          element={
-            <ProtectedRoute>
-              <AccountPage />
-            </ProtectedRoute>
-          } 
-        />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={
+          <>
+            <ScrollToTop />
+            <Routes>
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+              <Route path="/reset-password" element={<ResetPasswordPage />} />
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/game/:difficulty" element={<GamePage />} />
+              <Route 
+                path="/dashboard" 
+                element={
+                  <ProtectedRoute>
+                    <DashboardPage />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/dashboard/history" 
+                element={
+                  <ProtectedRoute>
+                    <HistoryPage />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route path="/auth/callback" element={<AuthCallback />} />
+              <Route path="/leaderboard" element={<LeaderboardPage />} />
+              <Route 
+                path="/account" 
+                element={
+                  <ProtectedRoute>
+                    <AccountPage />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </>
+        } />
       </Routes>
   );
 };

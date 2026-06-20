@@ -39,6 +39,9 @@ describe('ProtectedRoute', () => {
       signInWithGoogle: vi.fn(),
       signInWithEmail: vi.fn(),
       signUpWithEmail: vi.fn(),
+      getDisplayName: vi.fn(),
+      profile: null,
+      refreshProfile: vi.fn(),
     });
 
     renderProtected();
@@ -56,6 +59,9 @@ describe('ProtectedRoute', () => {
       signInWithGoogle: vi.fn(),
       signInWithEmail: vi.fn(),
       signUpWithEmail: vi.fn(),
+      getDisplayName: vi.fn(),
+      profile: null,
+      refreshProfile: vi.fn(),
     });
 
     renderProtected();
@@ -73,6 +79,9 @@ describe('ProtectedRoute', () => {
       signInWithGoogle: vi.fn(),
       signInWithEmail: vi.fn(),
       signUpWithEmail: vi.fn(),
+      getDisplayName: vi.fn(),
+       profile: { full_name: 'Test User' },
+       refreshProfile: vi.fn(),
     });
 
     renderProtected();

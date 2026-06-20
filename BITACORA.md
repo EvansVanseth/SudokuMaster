@@ -19,10 +19,15 @@
    - Implementación de `LeaderboardPage` y `LeaderboardSection` con diseño de podio elegante.
    - Integración en `LandingPage`.
 
-4. **Gestión de Cuenta**
-   - Creación de `AccountPage` (visualización de email, actualización de `full_name`).
-   - Implementación de Logout y estructura para futuras funciones (Cambio contraseña, Eliminar cuenta).
-   - Integración del botón "Mi Cuenta" en el Dashboard.
+4. **Gestión de Cuenta (Refactorización y Seguridad)**
+    - Implementación de `useAccount` hook (FSD).
+    - Sincronización en tiempo real del perfil con `AuthContext`.
+    - Seguridad: Validación OWASP en cambio de contraseña y confirmación de email para borrado de cuenta.
+    - Integración de Edge Function para borrado seguro de cuenta (`delete-account`).
+    - Flujo de "Olvidé mi contraseña" completo.
+    - Interfaz unificada (inputs consistentes, visualización de contraseña, modal de éxito, navegación mejorada).
+    - Ajuste de modelo de datos: eliminación de campo `username` redundante.""
+    - Implementación de `ScrollToTop` para navegación móvil.
 
 5. **Refinamiento Técnico**
    - Corrección de errores de RLS en Supabase (SECURITY INVOKER en vistas).

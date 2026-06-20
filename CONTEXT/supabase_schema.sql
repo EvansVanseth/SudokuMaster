@@ -1,7 +1,6 @@
 -- 1. Crear tabla de perfiles (extensión de auth.users)
 CREATE TABLE public.profiles (
   id UUID REFERENCES auth.users ON DELETE CASCADE NOT NULL PRIMARY KEY,
-  username TEXT,
   full_name TEXT,
   avatar_url TEXT,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL

@@ -65,10 +65,13 @@ describe('HistoryPage', () => {
       session: { access_token: 'token' } as unknown as Session,
       signOut: vi.fn(),
       signInWithGoogle: vi.fn(),
-      signInWithEmail: vi.fn(),
-      signUpWithEmail: vi.fn(),
-    });
-  });
+       signInWithEmail: vi.fn(),
+       signUpWithEmail: vi.fn(),
+       getDisplayName: vi.fn(),
+        profile: { full_name: 'Test User' },
+        refreshProfile: vi.fn(),
+     });
+   });
 
   it('carga partidas completadas al montar y las muestra', async () => {
     vi.mocked(gamePersistence.loadCompletedGamesForUser).mockResolvedValue(mockGames);
@@ -151,9 +154,12 @@ describe('HistoryPage', () => {
       session: null,
       signOut: vi.fn(),
       signInWithGoogle: vi.fn(),
-      signInWithEmail: vi.fn(),
-      signUpWithEmail: vi.fn(),
-    });
+       signInWithEmail: vi.fn(),
+       signUpWithEmail: vi.fn(),
+       getDisplayName: vi.fn(),
+       profile: null,
+       refreshProfile: vi.fn(),
+     });
 
     renderHistoryPage();
 

@@ -4,14 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { DashboardIcon } from '../../../shared/ui/icons';
 
 export const UserBanner: FC = () => {
-  const { user, isLoading } = useAuth();
+  const { user, getDisplayName, isLoading } = useAuth();
   const navigate = useNavigate();
-
-  const getDisplayName = () => {
-    if (!user) return '';
-    // Prioridad: display_name de nuestro registro, luego full_name de OAuth (Google), fallback a email.
-    return user.user_metadata?.display_name || user.user_metadata?.full_name || user.email;
-  };
 
   if (isLoading) {
     return <div className="user-banner-loading">Cargando...</div>;
