@@ -45,4 +45,25 @@ describe('AuthProvider Profile Synchronization', () => {
         expect(authState.profile).toEqual({ full_name: 'John Doe' });
     });
   });
+
+  it('exposes isGoogleUser in context', async () => {
+    const mockUser = { id: '123', app_metadata: { provider: 'google' } };
+    vi.mocked(supabase.auth.getSession).mockResolvedValue({ data: { session: { user: mockUser } } } as any);
+    
+    let authState: any;
+    render(
+      <AuthProvider>
+        <AuthContext.Consumer>
+          {(value) => {
+            authState = value;
+            return null;
+          }}
+        </AuthContext.Consumer>
+      </AuthProvider>
+    );
+
+    await waitFor(() => {
+        expect(authState.isGoogleUser).toBe(true);
+    });
+  });
 });

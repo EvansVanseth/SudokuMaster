@@ -42,7 +42,7 @@ describe('ProtectedRoute', () => {
       getDisplayName: vi.fn(),
       profile: null,
       refreshProfile: vi.fn(),
-    });
+    } as any);
 
     renderProtected();
 
@@ -62,7 +62,7 @@ describe('ProtectedRoute', () => {
       getDisplayName: vi.fn(),
       profile: null,
       refreshProfile: vi.fn(),
-    });
+    } as any);
 
     renderProtected();
 
@@ -82,7 +82,7 @@ describe('ProtectedRoute', () => {
       getDisplayName: vi.fn(),
        profile: { full_name: 'Test User' },
        refreshProfile: vi.fn(),
-    });
+    } as any);
 
     renderProtected();
 

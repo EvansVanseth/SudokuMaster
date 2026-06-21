@@ -5,7 +5,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { DashboardPage } from '../pages/DashboardPage';
 import * as gamePersistence from '../../../features/game/services/gamePersistence';
 import type { GameStats } from '../../../domain/types';
-import type { User, Session } from '@supabase/supabase-js';
 import type { RemoteGameSummaryRecord } from '../../../features/game/services/gamePersistence';
 
 // Mock useAuth
@@ -26,8 +25,6 @@ vi.mock('../../../features/game/services/gamePersistence', async () => {
 });
 
 import { useAuth } from '../../../features/auth/hooks/useAuth';
-
-const mockUser = { id: 'user-123', email: 'test@test.com', user_metadata: { display_name: 'TestUser' } };
 
 const mockStats: GameStats = {
   totalGames: 10,
@@ -53,17 +50,18 @@ describe('DashboardPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(useAuth).mockReturnValue({
-      user: mockUser as unknown as User,
+      user: { id: 'user-1' } as any,
       isLoading: false,
-      session: { access_token: 'token' } as unknown as Session,
+      session: { access_token: 'token' } as any,
       signOut: vi.fn(),
       signInWithGoogle: vi.fn(),
-       signInWithEmail: vi.fn(),
-       signUpWithEmail: vi.fn(),
-       getDisplayName: vi.fn().mockReturnValue('Test User'),
-        profile: { full_name: 'Test User' },
-        refreshProfile: vi.fn(),
-     });
+      signInWithEmail: vi.fn(),
+      signUpWithEmail: vi.fn(),
+      getDisplayName: vi.fn(),
+      profile: { full_name: 'Test' },
+      refreshProfile: vi.fn(),
+      isGoogleUser: false,
+    } as any);
    });
 
   it('renderiza stats cards agrupados con valores correctos', async () => {

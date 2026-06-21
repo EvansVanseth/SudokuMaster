@@ -63,7 +63,13 @@ const AccountPage = () => {
           <p>Esta acción es irreversible. Se eliminarán permanentemente tus datos de perfil, estadísticas y partidas guardadas.</p>
           <div style={{ display: 'flex', gap: '1rem' }}>
               <button className="btn-secondary" onClick={() => setShowDeleteConfirmModal(false)}>Cancelar</button>
-              <button className="btn-danger" onClick={() => { deleteAccount(deletePassword); setShowDeleteConfirmModal(false); }}>Confirmar eliminación</button>
+              <button className="btn-danger" onClick={async () => { 
+                  const success = await deleteAccount(deletePassword); 
+                  if (success) {
+                      setShowDeleteConfirmModal(false); 
+                      navigate('/'); 
+                  }
+              }}>Confirmar eliminación</button>
           </div>
         </div>
       </Modal>
@@ -94,7 +100,6 @@ const AccountPage = () => {
         <div className={styles.profileInfo}>
           <h3>Seguridad</h3>
           {!isGoogleUser && (
-            <>
               <div className={styles.formGroup} style={{ marginBottom: '1rem' }}>
                 <div style={{ position: 'relative' }}>
                   <input className={styles.input} type={showCurrentPassword ? 'text' : 'password'} placeholder="Contraseña actual" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
@@ -131,8 +136,11 @@ const AccountPage = () => {
                     Cambiar Contraseña
                 </button>
               </div>
-              
-              
+          )}
+          {isGoogleUser && (
+            <p className={styles.profileData}>La gestión de contraseña se realiza a través de tu cuenta de Google.</p>
+          )}
+
           <div className={styles.formGroup} style={{ marginBottom: '1rem' }}>
             <h3>Eliminar cuenta</h3>
             <input 
@@ -154,15 +162,14 @@ const AccountPage = () => {
                 />
               </div>
             )}
-            <button onClick={() => setShowDeleteConfirmModal(true)} className="btn-danger" disabled={loading}>
+            <button 
+              onClick={() => setShowDeleteConfirmModal(true)} 
+              className="btn-danger" 
+              disabled={loading || !deletePassword || (isGoogleUser ? deletePassword !== user?.email : deletePassword.length === 0)}
+            >
                 Eliminar Cuenta
             </button>
           </div>
-            </>
-          )}
-          {isGoogleUser && (
-            <p className={styles.profileData}>La gestión de seguridad (cambio de contraseña y eliminación de cuenta) se realiza a través de tu cuenta de Google.</p>
-          )}
         </div>
 
         <div className={styles.actions}>

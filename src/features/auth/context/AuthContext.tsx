@@ -16,6 +16,7 @@ export interface AuthState {
   signUpWithEmail: (email: string, pass: string, displayName: string) => Promise<void>;
   getDisplayName: () => string;
   refreshProfile: () => Promise<void>;
+  isGoogleUser: boolean;
 }
 
 export const AuthContext = createContext<AuthState | undefined>(undefined);

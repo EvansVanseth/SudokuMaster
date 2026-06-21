@@ -34,9 +34,9 @@ describe('AppRouter — /dashboard/history route', () => {
       signInWithEmail: vi.fn(),
       signUpWithEmail: vi.fn(),
       getDisplayName: vi.fn(),
-      profile: { full_name: 'Test User' },
+      isGoogleUser: false,
       refreshProfile: vi.fn(),
-     });
+     } as any);
    });
 
   it('navega a /dashboard/history y renderiza HistoryPage', async () => {
