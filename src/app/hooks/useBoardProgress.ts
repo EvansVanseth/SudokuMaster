@@ -15,9 +15,6 @@ export const useBoardProgress = (intervalMs: number = 15000) => {
 
       if (elapsed < intervalMs) {
         frameId = requestAnimationFrame(animate);
-      } else {
-        // Aseguramos que se inicie el siguiente ciclo si el interval aún no ha disparado
-        frameId = requestAnimationFrame(animate); 
       }
     };
 
@@ -25,6 +22,7 @@ export const useBoardProgress = (intervalMs: number = 15000) => {
     
     const interval = setInterval(() => {
       start = null; // Reset animation start time
+      requestAnimationFrame(animate); // Restart animation immediately
     }, intervalMs);
 
     return () => {

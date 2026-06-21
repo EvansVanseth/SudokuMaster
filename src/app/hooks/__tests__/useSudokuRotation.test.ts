@@ -1,8 +1,8 @@
 import { renderHook, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { useSudokuRotation } from '../useSudokuRotation';
+import { useTriviaRotation } from '../useSudokuRotation';
 
-describe('useSudokuRotation', () => {
+describe('useTriviaRotation', () => {
   beforeEach(() => {
     vi.useFakeTimers();
   });
@@ -13,7 +13,7 @@ describe('useSudokuRotation', () => {
 
   it('should rotate trivia after the specified interval', () => {
     const intervalMs = 15000;
-    const { result } = renderHook(() => useSudokuRotation(intervalMs));
+    const { result } = renderHook(() => useTriviaRotation(intervalMs));
 
     const initialTrivia = result.current.currentTrivia;
 

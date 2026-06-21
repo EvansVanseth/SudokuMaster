@@ -1,4 +1,4 @@
-export const getPasswordChangeTemplate = (email: string) => `
+export const getPasswordChangeTemplate = () => `
 <!DOCTYPE html>
 <html lang="es">
 <head>

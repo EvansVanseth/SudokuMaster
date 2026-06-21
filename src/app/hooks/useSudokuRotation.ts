@@ -47,8 +47,6 @@ export const useTriviaRotation = (intervalMs: number = 15000): TriviaHookResult 
 
       if (elapsed < intervalMs) {
         frameId = requestAnimationFrame(animate);
-      } else {
-        frameId = requestAnimationFrame(animate);
       }
     };
 
@@ -56,6 +54,7 @@ export const useTriviaRotation = (intervalMs: number = 15000): TriviaHookResult 
     
     const interval = setInterval(() => {
       start = null; // Reset animation start time
+      requestAnimationFrame(animate); // Restart animation immediately
       const randomIndex = Math.floor(Math.random() * TRIVIA_LIST.length);
       setCurrentTrivia(TRIVIA_LIST[randomIndex]);
       rotateDifficulty(); // ROTACIÓN AUTOMÁTICA

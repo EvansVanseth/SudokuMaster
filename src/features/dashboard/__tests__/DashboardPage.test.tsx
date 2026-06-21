@@ -95,7 +95,7 @@ describe('DashboardPage', () => {
     renderDashboard();
 
     await waitFor(() => {
-      expect(screen.getByText(/Test/)).toBeInTheDocument();
+      expect(screen.getByText(/Bienvenido/)).toBeInTheDocument();
     });
   });
 
