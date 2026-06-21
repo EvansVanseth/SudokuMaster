@@ -32,4 +32,18 @@
 5. **Refinamiento Técnico**
    - Corrección de errores de RLS en Supabase (SECURITY INVOKER en vistas).
    - Corrección de errores de Lint y Build.
-   - Actualización de `FeedbackModal` para usar versión dinámica.
+    - Actualización de `FeedbackModal` para usar versión dinámica.
+
+**Fecha**: 2026-06-21
+**Versión**: 0.1.3
+**Rama**: `feature/centralize-password-validation`
+
+## Resumen de Tareas Realizadas
+
+1. **Centralización y Optimización de Validación de Contraseñas**
+   - Creación de `src/domain/auth/password.ts` con lógica centralizada (reglas OWASP).
+   - Implementación de `src/domain/auth/denylist.ts` con más de 1000 contraseñas comunes.
+   - Optimización de rendimiento: Uso de `Set` para búsquedas $O(1)$ y pre-filtrado de la denylist contra reglas de complejidad.
+   - Refactorización de `RegisterForm.tsx` y `AccountPage.tsx` para usar el validador centralizado.
+   - Creación de tests unitarios para el nuevo validador y actualización de pruebas de integración.
+   - Documentación de seguridad en `README.md`.

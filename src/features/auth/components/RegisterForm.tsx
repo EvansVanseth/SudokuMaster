@@ -1,16 +1,7 @@
 import type { FC } from 'react';
 import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
-
-// Helper for password validation (OWASP-compliant rules)
-const validatePassword = (password: string): string | null => {
-  if (password.length < 8) return 'Mínimo 8 caracteres.';
-  if (!/[A-Z]/.test(password)) return 'Debe incluir al menos una mayúscula.';
-  if (!/[a-z]/.test(password)) return 'Debe incluir al menos una minúscula.';
-  if (!/[0-9]/.test(password)) return 'Debe incluir al menos un número.';
-  if (!/[^A-Za-z0-9]/.test(password)) return 'Debe incluir al menos un carácter especial.';
-  return null;
-};
+import { validatePassword } from '../../../domain/auth/password';
 
 export const RegisterForm: FC = () => {
   const [email, setEmail] = useState('');
