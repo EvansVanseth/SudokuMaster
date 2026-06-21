@@ -70,7 +70,8 @@ describe('HistoryPage', () => {
        getDisplayName: vi.fn(),
         profile: { full_name: 'Test User' },
         refreshProfile: vi.fn(),
-     });
+        isGoogleUser: false,
+     } as any);
    });
 
   it('carga partidas completadas al montar y las muestra', async () => {
@@ -157,9 +158,10 @@ describe('HistoryPage', () => {
        signInWithEmail: vi.fn(),
        signUpWithEmail: vi.fn(),
        getDisplayName: vi.fn(),
-       profile: null,
-       refreshProfile: vi.fn(),
-     });
+        profile: null,
+        refreshProfile: vi.fn(),
+        isGoogleUser: false,
+      } as any);
 
     renderHistoryPage();
 

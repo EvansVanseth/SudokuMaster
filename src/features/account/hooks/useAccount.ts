@@ -23,8 +23,9 @@ export const useAccount = () => {
       
       // Actualizar el contexto en memoria
       await refreshProfile();
-    } catch (e: any) {
-      setError(e.message);
+    } catch (e: unknown) {
+      if (e instanceof Error) setError(e.message);
+      else setError('Error desconocido');
     } finally {
       setLoading(false);
     }
@@ -59,16 +60,17 @@ export const useAccount = () => {
         });
 
         return true;
-    } catch (e: any) {
-        setError(e.message);
+    } catch (e: unknown) {
+        if (e instanceof Error) setError(e.message);
+        else setError('Error desconocido');
         return false;
     } finally {
         setLoading(false);
     }
   };
 
-  const deleteAccount = async (confirmation: string) => {
-    if (!user || !user.email) return;
+  const deleteAccount = async (confirmation: string): Promise<boolean> => {
+    if (!user || !user.email) return false;
     setLoading(true);
     setError(null);
     try {
@@ -92,8 +94,11 @@ export const useAccount = () => {
 
         // 3. Sign out obligatorio tras el borrado
         await supabase.auth.signOut();
-    } catch (e: any) {
-        setError(e.message);
+        return true;
+    } catch (e: unknown) {
+        if (e instanceof Error) setError(e.message);
+        else setError('Error desconocido');
+        return false;
     } finally {
         setLoading(false);
     }

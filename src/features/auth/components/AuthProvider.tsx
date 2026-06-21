@@ -107,8 +107,10 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     }
   };
 
+  const isGoogleUser = user?.app_metadata?.provider === 'google';
+
   return (
-    <AuthContext.Provider value={{ user, session, profile, isLoading, signInWithGoogle, signInWithEmail, signUpWithEmail, signOut, getDisplayName, refreshProfile }}>
+    <AuthContext.Provider value={{ user, session, profile, isLoading, signInWithGoogle, signInWithEmail, signUpWithEmail, signOut, getDisplayName, refreshProfile, isGoogleUser }}>
       {children}
     </AuthContext.Provider>
   );

@@ -4,20 +4,22 @@ import { useAccount } from '../hooks/useAccount';
 import { supabase } from '../../../shared/api/supabaseClient';
 
     vi.mock('../../../shared/api/supabaseClient', () => ({
-  supabase: {
-    from: vi.fn(() => ({
-        update: vi.fn().mockReturnThis(),
-        eq: vi.fn().mockResolvedValue({ error: null }),
-    })),
-    auth: {
-        signInWithPassword: vi.fn(),
-        updateUser: vi.fn(),
+    supabase: {
+        from: vi.fn(() => ({
+            update: vi.fn().mockReturnThis(),
+            eq: vi.fn().mockResolvedValue({ error: null }),
+        })),
+        auth: {
+            signInWithPassword: vi.fn(),
+            updateUser: vi.fn(),
+            signOut: vi.fn().mockResolvedValue({ error: null }),
+        },
+        functions: {
+            invoke: vi.fn().mockResolvedValue({ error: null }),
+        }
     },
-    functions: {
-        invoke: vi.fn().mockResolvedValue({ error: null }),
-    }
-  },
 }));
+
 
 vi.mock('../../auth/hooks/useAuth', () => ({
   useAuth: () => ({
@@ -69,5 +71,20 @@ describe('useAccount', () => {
 
         expect(result.current.error).toBe('Contraseña actual incorrecta');
         expect(supabase.auth.updateUser).not.toHaveBeenCalled();
+    });
+
+    it('deletes account successfully', async () => {
+        vi.mocked(supabase.auth.signInWithPassword).mockResolvedValue({ error: null } as any);
+        const { result } = renderHook(() => useAccount());
+
+        let success = false;
+        await act(async () => {
+            success = await result.current.deleteAccount('password');
+        });
+
+        expect(success).toBe(true);
+        expect(supabase.functions.invoke).toHaveBeenCalledWith('delete-account', { body: {} });
+        expect(supabase.auth.signOut).toHaveBeenCalled();
+        expect(result.current.error).toBe(null);
     });
 });
