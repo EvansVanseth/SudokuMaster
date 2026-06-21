@@ -16,9 +16,10 @@ interface Props {
   difficulty: Difficulty;
   grid: Grid;
   onPreviewSelect?: () => void;
+  progress?: number;
 }
 
-export const SudokuPreviewCard: FC<Props> = ({ title, difficulty, grid, onPreviewSelect }) => {
+export const SudokuPreviewCard: FC<Props> = ({ title, difficulty, grid, onPreviewSelect, progress }) => {
   const difficultyLabel: Record<Difficulty, string> = {
     easy: 'Fácil',
     medium: 'Medio',
@@ -42,6 +43,11 @@ export const SudokuPreviewCard: FC<Props> = ({ title, difficulty, grid, onPrevie
           <span className={`${styles.badge} ${badgeClass[difficulty]}`}>
             {difficultyLabel[difficulty]}
           </span>
+          {progress !== undefined && (
+            <div className={styles.progressBarContainer}>
+              <div className={styles.progressBar} style={{ width: `${progress}%` }} />
+            </div>
+          )}
         </div>
       </div>
     </Link>

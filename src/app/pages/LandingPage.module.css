@@ -28,9 +28,21 @@
   line-height: 1.6;
 }
 
-.previews {
+.gameSectionContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
   margin-bottom: 4rem;
 }
+
+@media (min-width: 1024px) {
+  .gameSectionContainer {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+  }
+}
+
 
 .previewHeader {
   display: flex;
@@ -61,18 +73,16 @@
 
 /* La línea de progreso */
 .trivia::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 3px;
-  background: var(--primary);
-  animation: progress 15s linear infinite;
+  content: none;
 }
 
 @keyframes progress {
   from { width: 100%; }
   to { width: 0%; }
+}
+
+.scrollIndicator {
+  display: none;
 }
 .cta {
   max-width: 500px;
