@@ -1,0 +1,11 @@
+## Apply Progress: add-board-timer
+
+- [x] 1.1 Update `src/app/hooks/useSudokuRotation.ts` to implement `progress` state using `requestAnimationFrame`.
+- [x] 1.2 Expose `progress` in `RotationHookResult`.
+- [x] 2.1 Update `src/shared/ui/SudokuPreviewCard.module.css` with progress bar styles.
+- [x] 2.2 Update `src/shared/ui/SudokuPreviewCard.tsx` to accept `progress` prop and render the bar.
+- [x] 3.1 Update `src/app/pages/LandingPage.tsx` to pass `progress` from the hook to `SudokuPreviewCard`.
+
+### Notes
+- Progress bar implemented as a thin white bar at the bottom of the card.
+- Animation synchronized with trivia rotation interval.

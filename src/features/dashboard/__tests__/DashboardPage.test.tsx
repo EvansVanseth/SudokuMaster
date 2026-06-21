@@ -95,7 +95,7 @@ describe('DashboardPage', () => {
     renderDashboard();
 
     await waitFor(() => {
-      expect(screen.getByText(/Test User/)).toBeInTheDocument();
+      expect(screen.getByText(/Bienvenido/)).toBeInTheDocument();
     });
   });
 
@@ -157,6 +157,6 @@ describe('DashboardPage', () => {
 
     expect(gamePersistence.deleteSavedGame).toHaveBeenCalledWith('game-1');
     // Stats should be refreshed after delete
-    expect(gamePersistence.getGameStats).toHaveBeenCalledWith('user-123');
+    expect(gamePersistence.getGameStats).toHaveBeenCalledWith('user-1');
   });
 });
